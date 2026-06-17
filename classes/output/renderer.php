@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Renderer for mod_uemsinfotutoria.
+ * Renderer for mod_gepeminfortutoria.
  *
- * @package    mod_uemsinfotutoria
+ * @package    mod_gepeminfortutoria
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_uemsinfotutoria\output;
+namespace mod_gepeminfortutoria\output;
 
 use plugin_renderer_base;
 
@@ -37,6 +37,6 @@ class renderer extends plugin_renderer_base {
      * @return string
      */
     public function render_tutoria_page(tutoria_page $page): string {
-        return $this->render_from_template('mod_uemsinfotutoria/tutoria_page', $page->export_for_template($this));
+        return $this->render_from_template('mod_gepeminfortutoria/tutoria_page', $page->export_for_template($this));
     }
 }

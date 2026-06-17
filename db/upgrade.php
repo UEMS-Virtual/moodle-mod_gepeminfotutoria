@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Upgrade steps for mod_uemsinfotutoria.
+ * Upgrade steps for mod_gepeminfortutoria.
  *
- * @package    mod_uemsinfotutoria
+ * @package    mod_gepeminfortutoria
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,18 +25,18 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Execute mod_uemsinfotutoria upgrade steps.
+ * Execute mod_gepeminfortutoria upgrade steps.
  *
  * @param int $oldversion Installed plugin version.
  * @return bool
  */
-function xmldb_uemsinfotutoria_upgrade(int $oldversion): bool {
+function xmldb_gepeminfortutoria_upgrade(int $oldversion): bool {
     global $DB;
 
     $dbman = $DB->get_manager();
 
     if ($oldversion < 2026051602) {
-        $table = new xmldb_table('uemsinfotutoria');
+        $table = new xmldb_table('gepeminfortutoria');
 
         $field = new xmldb_field('supporttitle', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'introformat');
         if (!$dbman->field_exists($table, $field)) {
@@ -53,11 +53,11 @@ function xmldb_uemsinfotutoria_upgrade(int $oldversion): bool {
             $dbman->add_field($table, $field);
         }
 
-        upgrade_mod_savepoint(true, 2026051602, 'uemsinfotutoria');
+        upgrade_mod_savepoint(true, 2026051602, 'gepeminfortutoria');
     }
 
     if ($oldversion < 2026051603) {
-        $table = new xmldb_table('uemsinfotutoria');
+        $table = new xmldb_table('gepeminfortutoria');
         $field = new xmldb_field('supporttitle', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'introformat');
 
         if ($dbman->field_exists($table, $field)) {
@@ -65,7 +65,7 @@ function xmldb_uemsinfotutoria_upgrade(int $oldversion): bool {
             $dbman->change_field_default($table, $field);
         }
 
-        upgrade_mod_savepoint(true, 2026051603, 'uemsinfotutoria');
+        upgrade_mod_savepoint(true, 2026051603, 'gepeminfortutoria');
     }
 
     return true;

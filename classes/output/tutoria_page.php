@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Renderable page for mod_uemsinfotutoria.
+ * Renderable page for mod_gepeminfortutoria.
  *
- * @package    mod_uemsinfotutoria
+ * @package    mod_gepeminfortutoria
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_uemsinfotutoria\output;
+namespace mod_gepeminfortutoria\output;
 
-use mod_uemsinfotutoria\local\team_data;
+use mod_gepeminfortutoria\local\team_data;
 use stdClass;
 
 /**
@@ -78,29 +78,15 @@ class tutoria_page implements \renderable, \templatable {
      * @return array<string, mixed>
      */
     public function export_for_template(\renderer_base $output): array {
-        $coursecontext   = \context_course::instance($this->course->id);
-        $isstudent       = team_data::is_student($this->userid, $coursecontext);
-        $canmanage       = team_data::can_manage_activities($this->userid, $coursecontext);
-        $expectmediators = team_data::expects_mediators($this->instance, $this->course);
-        $expecttutors    = team_data::expects_tutors($this->instance, $this->course);
-        $hascontent      = $expectmediators || $expecttutors;
+        $coursecontext = \context_course::instance($this->course->id);
+        $isstudent     = team_data::is_student($this->userid, $coursecontext);
+        $polo_groups   = team_data::get_polo_groups($this->course->id);
+        $team          = team_data::get_team($this->course->id, $this->context);
+        $tutors_data   = $this->format_members($team['tutors']);
 
-        if (!$hascontent) {
-            return [
-                'hascontent' => false,
-                'shownotice' => $canmanage,
-                'nofunctionsexpected' => get_string('nofunctionsexpected', 'uemsinfotutoria'),
-            ];
-        }
-
-        $polo_groups = team_data::get_polo_groups($this->course->id);
-        $team        = team_data::get_team($this->course->id, $this->context);
-
-        $mediators_data = $this->format_members($team['mediators']);
-        $tutors_data    = $this->format_members($team['tutors']);
         $supporttitle = trim($this->instance->supporttitle ?? '');
         if ($supporttitle === '') {
-            $supporttitle = get_string('seuponto', 'uemsinfotutoria');
+            $supporttitle = get_string('seuponto', 'gepeminfortutoria');
         }
 
         $fullintro = trim($this->instance->intro ?? '');
@@ -113,14 +99,10 @@ class tutoria_page implements \renderable, \templatable {
         $base = [
             'hascontent' => true,
             'shownotice' => false,
-            'show_mediators' => $expectmediators,
-            'show_tutors' => $expecttutors,
-            'all_mediators' => $mediators_data,
+            'show_tutors' => true,
             'all_tutors' => $tutors_data,
-            'all_has_mediators' => !empty($mediators_data),
             'all_has_tutors' => !empty($tutors_data),
-            'all_empty_mediators_message' => get_string('mediatornotinformedcourse', 'uemsinfotutoria'),
-            'all_empty_tutors_message' => get_string('tutornotinformedcourse', 'uemsinfotutoria'),
+            'all_empty_tutors_message' => get_string('tutorianotinformedcourse', 'gepeminfortutoria'),
             'full_intro' => $fullintro,
             'has_full_intro' => $fullintro !== '',
         ];
@@ -128,23 +110,18 @@ class tutoria_page implements \renderable, \templatable {
         if ($isstudent) {
             $student_polos = team_data::get_student_polos($this->userid, $polo_groups);
             $polo_name     = !empty($student_polos) ? $student_polos[0] : '';
-            $mine_mediators = $this->filter_by_polo($team['mediators'], $polo_name);
-            $mine_tutors    = $this->filter_by_polo($team['tutors'], $polo_name);
+            $mine_tutors   = $this->filter_by_polo($team['tutors'], $polo_name);
 
             return $base + [
                 'isstudent'           => true,
                 'supporttitle'        => $supporttitle,
                 'polo_name'           => self::format_polo_name($polo_name),
                 'has_polo'            => !empty($polo_name),
-                'mine_mediators'      => $mine_mediators,
                 'mine_tutors'         => $mine_tutors,
-                'mine_has_mediators'  => !empty($mine_mediators),
                 'mine_has_tutors'     => !empty($mine_tutors),
-                'mine_mediator_label' => $this->mediator_label(count($mine_mediators)),
-                'mine_tutor_label'    => $this->tutor_label(count($mine_tutors)),
-                'mine_empty_mediators_message' => get_string('mediatornotinformedpolo', 'uemsinfotutoria'),
-                'mine_empty_tutors_message' => get_string('tutornotinformedpolo', 'uemsinfotutoria'),
-                'nopolohelp' => get_string('nopolohelp', 'uemsinfotutoria'),
+                'mine_tutor_label'    => get_string('tutoria', 'gepeminfortutoria'),
+                'mine_empty_tutors_message' => get_string('tutorianotinformedpolo', 'gepeminfortutoria'),
+                'nopolohelp' => get_string('nopolohelp', 'gepeminfortutoria'),
             ];
         }
 
@@ -156,15 +133,15 @@ class tutoria_page implements \renderable, \templatable {
     /**
      * Convert raw member arrays into template-ready arrays.
      *
-     * @param array $members  Output of team_data::get_team().
+     * @param array $members Output of team_data::get_team().
      * @return array
      */
     private function format_members(array $members): array {
         $result = [];
         foreach ($members as $m) {
-            $user   = $m['user'];
-            $polos  = $m['polos'];
-            $count  = count($polos);
+            $user  = $m['user'];
+            $polos = $m['polos'];
+            $count = count($polos);
 
             $polos_items = [];
             foreach (array_values($polos) as $index => $polo) {
@@ -175,8 +152,8 @@ class tutoria_page implements \renderable, \templatable {
             }
 
             $polos_label = $count > 1
-                ? get_string('polosatendidos', 'uemsinfotutoria')
-                : get_string('polo', 'uemsinfotutoria');
+                ? get_string('polosatendidos', 'gepeminfortutoria')
+                : get_string('polo', 'gepeminfortutoria');
 
             $result[] = [
                 'name'            => fullname($user),
@@ -195,7 +172,7 @@ class tutoria_page implements \renderable, \templatable {
      *
      * @param array  $members   Raw team_data members.
      * @param string $polo_name Polo name to filter by.
-     * @return array  Template-ready member arrays.
+     * @return array Template-ready member arrays.
      */
     private function filter_by_polo(array $members, string $polo_name): array {
         if ($polo_name === '') {
@@ -218,6 +195,7 @@ class tutoria_page implements \renderable, \templatable {
     private static function format_polo_name(string $name): string {
         $name = trim($name);
         $name = preg_replace('/^polo(?:\s+uab)?(?:\s+associado)?(?:\s+(?:de|da|do|das|dos))?\s+/iu', '', $name);
+        $name = preg_replace('/\s*\(\d+\)\s*$/u', '', $name ?? '');
         $name = trim($name ?? '');
 
         if ($name === '') {
@@ -241,20 +219,6 @@ class tutoria_page implements \renderable, \templatable {
         }
 
         return implode('', $words);
-    }
-
-    /**
-     * Neutral label for pedagogical mediation.
-     */
-    private function mediator_label(int $count): string {
-        return get_string('mediadorespedagogicos', 'uemsinfotutoria');
-    }
-
-    /**
-     * Neutral label for on-site tutoring.
-     */
-    private function tutor_label(int $count): string {
-        return get_string('tutorespresenciais', 'uemsinfotutoria');
     }
 
 }

@@ -1,4 +1,4 @@
-@mod @mod_uemsinfotutoria
+@mod @mod_gepeminfortutoria
 Feature: Display tutoring information inline in the course
   In order to find support contacts without extra navigation
   As a course participant
@@ -12,50 +12,40 @@ Feature: Display tutoring information inline in the course
       | username | firstname | lastname | email |
       | student1 | João      | Aluno    | student1@example.com |
       | teacher1 | Teacher   | One      | teacher1@example.com |
-      | tutor1   | Ana       | Tutora   | tutor1@example.com |
-      | mediator1 | Maria    | Mediadora | mediator1@example.com |
-    And the following "roles" exist:
-      | name                | shortname  | description         | archetype |
-      | Tutor Presencial    | mod_tutor  | Tutor Presencial    | teacher   |
-      | Mediador Pedagógico | mod_medpdg | Mediador Pedagógico | teacher   |
+      | tutor1   | Ana       | Tutoria  | tutor1@example.com |
     And the following "course enrolments" exist:
       | user      | course | role           |
       | student1  | C1     | student        |
       | teacher1  | C1     | editingteacher |
-      | tutor1    | C1     | mod_tutor      |
-      | mediator1 | C1     | mod_medpdg     |
+      | tutor1    | C1     | teacher        |
     And the following "groups" exist:
-      | name             | course | idnumber |
-      | Polo Bataguassu  | C1     | POLO1    |
+      | name                    | course | idnumber |
+      | Polo Bataguassu (20)    | C1     | POLO1    |
     And the following "group members" exist:
       | user      | group |
       | student1  | POLO1 |
       | tutor1    | POLO1 |
-      | mediator1 | POLO1 |
     And the following "activity" exists:
-      | activity       | uemsinfotutoria |
-      | course         | C1              |
-      | idnumber       | UIT1            |
-      | name           | Tutoring and Mediation Team |
-      | intro          | Pedagogical mediation and tutoring team assigned to the course polos. |
-      | supporttitle   | Your Tutoring and Mediation Team |
-      | expecttutor    | 1               |
-      | expectmediator | 1               |
+      | activity       | gepeminfortutoria |
+      | course         | C1                 |
+      | idnumber       | UIT1               |
+      | name           | Tutoring Team      |
+      | intro          | Tutoring assigned to the course polos. |
+      | supporttitle   | Your Tutoring      |
 
   Scenario: Student sees their polo contacts inline in the course page
     When I am on the "Course 1" course page logged in as "student1"
-    Then I should see "Your Tutoring and Mediation Team"
-    And I should see "Polo Bataguassu"
-    And I should see "Ana Tutora"
-    And I should see "Maria Mediadora"
+    Then I should see "Your Tutoring"
+    And I should see "Bataguassu"
+    And I should not see "Polo Bataguassu (20)"
+    And I should see "Ana Tutoria"
     And I should see "My polo"
     And I should see "Full list"
 
   Scenario: Teacher sees the full course team inline in the course page
     When I am on the "Course 1" course page logged in as "teacher1"
-    Then I should see "Tutoring and Mediation Team"
-    And I should see "Ana Tutora"
-    And I should see "Maria Mediadora"
+    Then I should see "Tutoring Team"
+    And I should see "Ana Tutoria"
     And I should not see "My polo"
 
   @javascript
@@ -68,4 +58,4 @@ Feature: Display tutoring information inline in the course
       | Name | Tutoring contacts |
       | Student panel title | Support contacts |
     When I press "Save and return to course"
-    Then I should see "Tutoring and Mediation Team" in the "New section" "section"
+    Then I should see "Tutoring Team" in the "New section" "section"

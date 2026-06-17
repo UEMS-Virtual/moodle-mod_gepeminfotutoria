@@ -7,71 +7,27 @@
     (at your option) any later version.
 }}
 {{!
-    @template mod_uemsinfotutoria/tutoria_page
+    @template mod_gepeminfortutoria/tutoria_page
 
     Main page template. Renders the student view (Meu polo + toggle) or the
-    full institutional view depending on the viewer's role.
-
-    Context variables:
-    * isstudent            - bool
-    * polo_name            - string   (student only)
-    * has_polo             - bool     (student only)
-    * mine_mediator_label  - string   singular/plural (student only)
-    * mine_tutor_label     - string   singular/plural (student only)
-    * mine_mediators       - array    (student only)
-    * mine_tutors          - array    (student only)
-    * mine_has_mediators   - bool     (student only)
-    * mine_has_tutors      - bool     (student only)
-    * all_mediators        - array
-    * all_tutors           - array
-    * all_has_mediators    - bool
-    * all_has_tutors       - bool
-
-    Each member item:
-    * name            - string
-    * profileimageurl - string
-    * messageurl      - string
-    * polos_label     - string
-    * polos_text      - string
-    * has_polos       - bool
-
-    Example context (json):
-    {
-        "isstudent": true,
-        "polo_name": "Polo UAB de Bataguassu",
-        "has_polo": true,
-        "mine_mediator_label": "Mediador Pedagógico",
-        "mine_tutor_label": "Tutor Presencial",
-        "mine_mediators": [{"name": "Ana Paula Ribeiro", "profileimageurl": "/foto.jpg", "messageurl": "/message/index.php?id=5", "polos_label": "", "polos_text": "", "has_polos": false}],
-        "mine_tutors": [],
-        "mine_has_mediators": true,
-        "mine_has_tutors": false,
-        "all_mediators": [],
-        "all_tutors": [],
-        "all_has_mediators": false,
-        "all_has_tutors": false
-    }
+    full view depending on the viewer's role.
 }}
-{{#hascontent}}
-<div class="mod-uems-info-tutoria">
+<div class="mod-gepemin-info-tutoria">
 
 {{#isstudent}}
-{{! ── Visão do estudante: alternância Meu polo / Lista completa ── }}
-<div class="uit-switcher-shell" data-region="uemsinfotutoria-switcher">
+<div class="uit-switcher-shell" data-region="gepeminfortutoria-switcher">
     <div class="uit-switcher-top">
-        <div class="uit-toggle" role="tablist" aria-label="{{#str}} alternarvisualizacao, uemsinfotutoria {{/str}}">
+        <div class="uit-toggle" role="tablist" aria-label="{{#str}} alternarvisualizacao, gepeminfortutoria {{/str}}">
             <button type="button" role="tab" aria-selected="true" data-view="mine" class="uit-toggle-btn">
-                {{#str}} meupolo, uemsinfotutoria {{/str}}
+                {{#str}} meupolo, gepeminfortutoria {{/str}}
             </button>
             <button type="button" role="tab" aria-selected="false" data-view="all" class="uit-toggle-btn">
-                {{#str}} listacompleta, uemsinfotutoria {{/str}}
+                {{#str}} listacompleta, gepeminfortutoria {{/str}}
             </button>
         </div>
     </div>
 
     <div class="uit-stage">
-
-        {{! ── View: Meu polo ── }}
         <div class="uit-view uit-view--active" data-panel="mine">
             <div class="uit-student-cover">
                 <aside class="uit-green-panel uit-student-side">
@@ -79,10 +35,10 @@
                         <div class="uit-big-title">{{supporttitle}}</div>
                     </div>
                     <div class="uit-polo-name">
-                        <div class="uit-polo-label">{{#str}} seupolo, uemsinfotutoria {{/str}}</div>
+                        <div class="uit-polo-label">{{#str}} seupolo, gepeminfortutoria {{/str}}</div>
                         <div class="uit-polo-value">
                             {{#has_polo}}{{polo_name}}{{/has_polo}}
-                            {{^has_polo}}{{#str}} sempoloidentificado, uemsinfotutoria {{/str}}{{/has_polo}}
+                            {{^has_polo}}{{#str}} sempoloidentificado, gepeminfortutoria {{/str}}{{/has_polo}}
                         </div>
                     </div>
                 </aside>
@@ -92,30 +48,12 @@
                     <p class="uit-empty">{{nopolohelp}}</p>
                     {{/has_polo}}
                     <div class="uit-team-line">
-
-                        {{#show_mediators}}
-                        <article class="uit-card">
-                            <h2 class="uit-role-title">{{mine_mediator_label}}</h2>
-                            {{#mine_has_mediators}}
-                            <div class="uit-people-list">
-                                {{#mine_mediators}}
-                                {{> mod_uemsinfotutoria/person_item_compact }}
-                                {{/mine_mediators}}
-                            </div>
-                            {{/mine_has_mediators}}
-                            {{^mine_has_mediators}}
-                            <p class="uit-empty">{{mine_empty_mediators_message}}</p>
-                            {{/mine_has_mediators}}
-                        </article>
-                        {{/show_mediators}}
-
-                        {{#show_tutors}}
                         <article class="uit-card">
                             <h2 class="uit-role-title">{{mine_tutor_label}}</h2>
                             {{#mine_has_tutors}}
                             <div class="uit-people-list">
                                 {{#mine_tutors}}
-                                {{> mod_uemsinfotutoria/person_item_compact }}
+                                {{> mod_gepeminfortutoria/person_item_compact }}
                                 {{/mine_tutors}}
                             </div>
                             {{/mine_has_tutors}}
@@ -123,36 +61,23 @@
                             <p class="uit-empty">{{mine_empty_tutors_message}}</p>
                             {{/mine_has_tutors}}
                         </article>
-                        {{/show_tutors}}
-
                     </div>
                 </div>
             </div>
         </div>
 
-        {{! ── View: Lista completa ── }}
         <div class="uit-view" data-panel="all">
-            {{> mod_uemsinfotutoria/full_view }}
+            {{> mod_gepeminfortutoria/full_view }}
         </div>
-
     </div>
 </div>
 {{/isstudent}}
 
 {{^isstudent}}
-{{! ── Visão institucional (demais papéis) ── }}
-{{> mod_uemsinfotutoria/full_view }}
+{{> mod_gepeminfortutoria/full_view }}
 {{/isstudent}}
 
 </div>
 {{#js}}
-require(['mod_uemsinfotutoria/view_toggle'], function(module) { module.init(); });
+require(['mod_gepeminfortutoria/view_toggle'], function(module) { module.init(); });
 {{/js}}
-{{/hascontent}}
-{{^hascontent}}
-{{#shownotice}}
-<div class="mod-uems-info-tutoria">
-    <p class="uit-empty">{{nofunctionsexpected}}</p>
-</div>
-{{/shownotice}}
-{{/hascontent}}

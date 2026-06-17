@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Behat no Projeto — mod_uemsinfotutoria</title>
+  <title>Behat no Projeto — mod_gepeminfortutoria</title>
   <style>
     :root {
       --primary: #006b5f;
@@ -109,7 +109,7 @@
 <body>
 <main>
   <header>
-    <div class="kicker">mod_uemsinfotutoria</div>
+    <div class="kicker">mod_gepeminfortutoria</div>
     <h1>Behat no Projeto</h1>
     <p>Uma explicação didática do que é Behat, por que ele existe no Moodle e como ele foi usado para validar o plugin de Informações de Tutoria.</p>
   </header>
@@ -210,7 +210,7 @@ And I should see "Polo Bataguassu"</code></pre>
       <li>os papéis institucionais <code>mod_tutor</code> e <code>mod_medpdg</code>;</li>
       <li>um grupo chamado <code>Polo Bataguassu</code>;</li>
       <li>os membros desse grupo;</li>
-      <li>uma instância da atividade <code>uemsinfotutoria</code>.</li>
+      <li>uma instância da atividade <code>gepeminfortutoria</code>.</li>
     </ul>
     <p>Isso significa que o teste não depende de dados manuais existentes no Moodle. Ele monta tudo que precisa, roda, e depois o ambiente de teste é limpo pelo Moodle.</p>
   </section>
@@ -268,7 +268,7 @@ Scenario: Teacher can add the activity from the activity chooser
     <p>O Moodle precisa de um ambiente separado para testes Behat. No <code>config.php</code> local, adicionamos:</p>
     <pre><code>$CFG-&gt;behat_prefix = 'bht_';
 $CFG-&gt;behat_dataroot = '/var/www/behatdata';
-$CFG-&gt;behat_wwwroot = 'http://moodle45-app';
+$CFG-&gt;behat_wwwroot = 'http://moodle42-app';
 $CFG-&gt;behat_profiles = array(
     'chrome' =&gt; array(
         'browser' =&gt; 'chrome',
@@ -285,32 +285,32 @@ $CFG-&gt;behat_profiles = array(
     <p>Para cenários com <code>@javascript</code>, o Behat precisa controlar um navegador real. Para isso usamos o <strong>Selenium</strong>.</p>
     <p>No nosso ambiente Docker, subimos um container com Chromium:</p>
     <pre><code>docker run -d \
-  --name moodle45-selenium \
-  --network container:moodle45-app \
+  --name moodle42-selenium \
+  --network container:moodle42-app \
   --shm-size=2g \
   selenium/standalone-chromium:latest</code></pre>
     <p>O detalhe importante é:</p>
-    <pre><code>--network container:moodle45-app</code></pre>
+    <pre><code>--network container:moodle42-app</code></pre>
     <p>Isso faz o Selenium compartilhar a rede do container do Moodle. Assim, de dentro do Moodle, o endereço <code>127.0.0.1:4444</code> aponta para o Selenium.</p>
   </section>
 
   <section>
     <h2>Comandos usados</h2>
     <h3>Inicializar o ambiente Behat</h3>
-    <pre><code>docker exec moodle45-app php /var/www/html/admin/tool/behat/cli/init.php</code></pre>
+    <pre><code>docker exec moodle42-app php /var/www/html/admin/tool/behat/cli/init.php</code></pre>
 
     <h3>Rodar os testes Behat do plugin</h3>
-    <pre><code>docker exec moodle45-app bash -lc \
+    <pre><code>docker exec moodle42-app bash -lc \
   'cd /var/www/html &amp;&amp; vendor/bin/behat \
    --config /var/www/behatdata/behatrun/behat/behat.yml \
    --profile=chrome \
-   mod/uemsinfotutoria/tests/behat/inline_display.feature'</code></pre>
+   mod/gepeminfortutoria/tests/behat/inline_display.feature'</code></pre>
 
     <h3>Rodar só cenários sem JavaScript</h3>
-    <pre><code>docker exec moodle45-app bash -lc \
+    <pre><code>docker exec moodle42-app bash -lc \
   'cd /var/www/html &amp;&amp; vendor/bin/behat \
    --config /var/www/behatdata/behatrun/behat/behat.yml \
-   mod/uemsinfotutoria/tests/behat/inline_display.feature \
+   mod/gepeminfortutoria/tests/behat/inline_display.feature \
    --tags="~@javascript"'</code></pre>
   </section>
 

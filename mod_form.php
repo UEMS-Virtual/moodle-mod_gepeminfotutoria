@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Instance form for mod_uemsinfotutoria.
+ * Instance form for mod_gepeminfortutoria.
  *
- * @package    mod_uemsinfotutoria
+ * @package    mod_gepeminfortutoria
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,7 +29,7 @@ require_once($CFG->dirroot . '/course/moodleform_mod.php');
 /**
  * Activity instance form.
  */
-class mod_uemsinfotutoria_mod_form extends moodleform_mod {
+class mod_gepeminfortutoria_mod_form extends moodleform_mod {
     /**
      * Define the form.
      */
@@ -42,34 +42,20 @@ class mod_uemsinfotutoria_mod_form extends moodleform_mod {
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
-        $mform->setDefault('name', get_string('defaultname', 'uemsinfotutoria'));
+        $mform->setDefault('name', get_string('defaultname', 'gepeminfortutoria'));
 
         $this->standard_intro_elements();
         $mform->setDefault('introeditor', [
-            'text' => get_string('defaultintro', 'uemsinfotutoria'),
+            'text' => get_string('defaultintro', 'gepeminfortutoria'),
             'format' => FORMAT_HTML,
         ]);
 
-        $mform->addElement('header', 'uemsinfotutoriasettings', get_string('pluginname', 'uemsinfotutoria'));
+        $mform->addElement('header', 'gepeminfortutoriasettings', get_string('pluginname', 'gepeminfortutoria'));
 
-        $mform->addElement('text', 'supporttitle', get_string('supporttitle', 'uemsinfotutoria'), ['size' => '64']);
+        $mform->addElement('text', 'supporttitle', get_string('supporttitle', 'gepeminfortutoria'), ['size' => '64']);
         $mform->setType('supporttitle', PARAM_TEXT);
         $mform->addRule('supporttitle', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
-        $mform->setDefault('supporttitle', get_string('seuponto', 'uemsinfotutoria'));
-
-        $expectoptions = [
-            0 => get_string('expect:auto', 'uemsinfotutoria'),
-            1 => get_string('yes'),
-            2 => get_string('no'),
-        ];
-
-        $mform->addElement('select', 'expecttutor', get_string('expecttutor', 'uemsinfotutoria'), $expectoptions);
-        $mform->setDefault('expecttutor', 0);
-        $mform->addHelpButton('expecttutor', 'expecttutor', 'uemsinfotutoria');
-
-        $mform->addElement('select', 'expectmediator', get_string('expectmediator', 'uemsinfotutoria'), $expectoptions);
-        $mform->setDefault('expectmediator', 0);
-        $mform->addHelpButton('expectmediator', 'expectmediator', 'uemsinfotutoria');
+        $mform->setDefault('supporttitle', get_string('seuponto', 'gepeminfortutoria'));
 
         $this->standard_coursemodule_elements();
         $this->add_action_buttons();

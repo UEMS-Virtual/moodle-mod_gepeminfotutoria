@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Restore steps for mod_uemsinfotutoria.
+ * Restore steps for mod_gepeminfortutoria.
  *
- * @package    mod_uemsinfotutoria
+ * @package    mod_gepeminfortutoria
  * @category   backup
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Structure step to restore one uemsinfotutoria activity instance.
+ * Structure step to restore one gepeminfortutoria activity instance.
  */
-class restore_uemsinfotutoria_activity_structure_step extends restore_activity_structure_step {
+class restore_gepeminfortutoria_activity_structure_step extends restore_activity_structure_step {
 
     /**
      * Define the paths to restore.
@@ -37,7 +37,7 @@ class restore_uemsinfotutoria_activity_structure_step extends restore_activity_s
      */
     protected function define_structure() {
         $paths = [];
-        $paths[] = new restore_path_element('uemsinfotutoria', '/activity/uemsinfotutoria');
+        $paths[] = new restore_path_element('gepeminfortutoria', '/activity/gepeminfortutoria');
 
         return $this->prepare_activity_structure($paths);
     }
@@ -47,13 +47,13 @@ class restore_uemsinfotutoria_activity_structure_step extends restore_activity_s
      *
      * @param array $data Restored data.
      */
-    protected function process_uemsinfotutoria($data) {
+    protected function process_gepeminfortutoria($data) {
         global $DB;
 
         $data = (object) $data;
         $data->course = $this->get_courseid();
 
-        $newitemid = $DB->insert_record('uemsinfotutoria', $data);
+        $newitemid = $DB->insert_record('gepeminfortutoria', $data);
         $this->apply_activity_instance($newitemid);
     }
 
@@ -61,6 +61,6 @@ class restore_uemsinfotutoria_activity_structure_step extends restore_activity_s
      * Restore related files.
      */
     protected function after_execute() {
-        $this->add_related_files('mod_uemsinfotutoria', 'intro', null);
+        $this->add_related_files('mod_gepeminfortutoria', 'intro', null);
     }
 }

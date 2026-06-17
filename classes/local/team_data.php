@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Team data service for mod_uemsinfotutoria.
+ * Team data service for mod_gepeminfortutoria.
  *
- * @package    mod_uemsinfotutoria
+ * @package    mod_gepeminfortutoria
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_uemsinfotutoria\local;
+namespace mod_gepeminfortutoria\local;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -33,11 +33,8 @@ defined('MOODLE_INTERNAL') || die();
  */
 class team_data {
 
-    /** Role shortname for pedagogical mediators. */
-    const ROLE_MEDIATOR = 'mod_medpdg';
-
-    /** Role shortname for on-site tutors. */
-    const ROLE_TUTOR = 'mod_tutor';
+    /** Role shortname for tutors (Moodle Moderador / non-editing teacher). */
+    const ROLE_TUTOR = 'teacher';
 
     /** Expectation mode: resolve from course context. */
     const EXPECT_AUTO = 0;
@@ -59,7 +56,7 @@ class team_data {
      *
      * @param int             $courseid
      * @param \context_module $modcontext  Used to build profile image URLs.
-     * @return array{mediators: array, tutors: array}
+     * @return array{tutors: array}
      */
     public static function get_team(int $courseid, \context_module $modcontext): array {
         $coursecontext = \context_course::instance($courseid);
@@ -67,12 +64,10 @@ class team_data {
         $polo_groups = self::get_polo_groups($courseid);
         $user_polos  = self::map_users_to_polos($polo_groups);
 
-        $mediators = self::get_users_by_role(self::ROLE_MEDIATOR, $coursecontext, $user_polos);
-        $tutors    = self::get_users_by_role(self::ROLE_TUTOR,    $coursecontext, $user_polos);
+        $tutors = self::get_users_by_role(self::ROLE_TUTOR, $coursecontext, $user_polos);
 
         return [
-            'mediators' => $mediators,
-            'tutors'    => $tutors,
+            'tutors' => $tutors,
         ];
     }
 
@@ -236,49 +231,14 @@ class team_data {
     }
 
     /**
-     * Resolve whether on-site tutors are expected for this instance/course.
+     * Return whether tutoring is expected for this adaptation.
      *
      * @param object $instance Activity instance.
      * @param object $course Course record.
      * @return bool
      */
     public static function expects_tutors(object $instance, object $course): bool {
-        $mode = isset($instance->expecttutor) ? (int) $instance->expecttutor : self::EXPECT_AUTO;
-        if ($mode === self::EXPECT_YES) {
-            return true;
-        }
-        if ($mode === self::EXPECT_NO) {
-            return false;
-        }
         return true;
-    }
-
-    /**
-     * Resolve whether pedagogical mediators are expected for this instance/course.
-     *
-     * @param object $instance Activity instance.
-     * @param object $course Course record.
-     * @return bool
-     */
-    public static function expects_mediators(object $instance, object $course): bool {
-        $mode = isset($instance->expectmediator) ? (int) $instance->expectmediator : self::EXPECT_AUTO;
-        if ($mode === self::EXPECT_YES) {
-            return true;
-        }
-        if ($mode === self::EXPECT_NO) {
-            return false;
-        }
-        return !self::is_reoffer_course($course->shortname ?? '');
-    }
-
-    /**
-     * Return true if the course shortname contains an isolated REO/REO2 marker.
-     *
-     * @param string $shortname Course shortname.
-     * @return bool
-     */
-    public static function is_reoffer_course(string $shortname): bool {
-        return preg_match('/(?:^|[^A-Za-z0-9])REO2?(?:$|[^A-Za-z0-9])/i', $shortname) === 1;
     }
 
     /**

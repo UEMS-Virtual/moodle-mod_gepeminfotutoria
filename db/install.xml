@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/uemsinfotutoria/db" VERSION="2026051600" COMMENT="XMLDB file for Moodle mod_uemsinfotutoria"
+<XMLDB PATH="mod/gepeminfortutoria/db" VERSION="2026051600" COMMENT="XMLDB file for Moodle mod_gepeminfortutoria"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
   <TABLES>
-    <TABLE NAME="uemsinfotutoria" COMMENT="Instances of the UEMS tutoring information activity">
+    <TABLE NAME="gepeminfortutoria" COMMENT="Instances of the tutoring information activity">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Course ID"/>
@@ -11,8 +11,8 @@
         <FIELD NAME="intro" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Activity introduction"/>
         <FIELD NAME="introformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Introduction format"/>
         <FIELD NAME="supporttitle" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Student support panel title"/>
-        <FIELD NAME="expecttutor" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Whether on-site tutors are expected: 0 auto, 1 yes, 2 no"/>
-        <FIELD NAME="expectmediator" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Whether pedagogical mediators are expected: 0 auto, 1 yes, 2 no"/>
+        <FIELD NAME="expecttutor" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Legacy tutoring expectation field kept for backup/restore compatibility"/>
+        <FIELD NAME="expectmediator" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Legacy mediation expectation field kept for backup/restore compatibility"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>

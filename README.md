@@ -1,27 +1,26 @@
-# mod_uemsinfotutoria
+# mod_gepeminfortutoria
 
-Plugin Moodle para exibir, dentro da disciplina, a equipe de tutoria presencial e mediação pedagógica vinculada aos polos.
+Plugin Moodle para Moodle 4.2.11 que exibe, dentro da disciplina, contatos de Tutoria vinculados aos polos.
 
 A experiência principal é inline, no estilo Label: a informação aparece diretamente na página da disciplina, sem exigir clique do estudante.
 
 ## Requisitos
 
-- Moodle 4.5.
-- Plugin instalado em `mod/uemsinfotutoria`.
-- Papéis institucionais existentes no Moodle:
-  - `mod_tutor` — Tutor Presencial.
-  - `mod_medpdg` — Mediador Pedagógico.
+- Moodle 4.2.11.
+- Plugin instalado em `mod/gepeminfortutoria`.
+- Papel Moodle `teacher` — Moderador, exibido publicamente como **Tutoria**.
 - Polos representados por grupos do curso cujo nome contém `polo`.
+- Branch estável: `MOODLE_402_STABLE`.
 
 ## Instalação
 
-A pasta do plugin dentro do Moodle deve se chamar `uemsinfotutoria`.
+A pasta do plugin dentro do Moodle deve se chamar `gepeminfortutoria`.
 
 Exemplo usando Git:
 
 ```bash
 cd /caminho/do/moodle/mod
-git clone -b MOODLE_405_STABLE https://github.com/UEMS-Virtual/moodle-mod_uems_info_tutoria.git uemsinfotutoria
+git clone -b MOODLE_402_STABLE https://github.com/UEMS-Virtual/moodle-mod_gepeminfotutoria.git gepeminfortutoria
 cd /caminho/do/moodle
 php admin/cli/upgrade.php
 php admin/cli/purge_caches.php
@@ -30,13 +29,13 @@ php admin/cli/purge_caches.php
 No ambiente Docker local deste projeto:
 
 ```bash
-docker exec moodle45-app php /var/www/html/admin/cli/upgrade.php --non-interactive
-docker exec moodle45-app php /var/www/html/admin/cli/purge_caches.php
+docker exec moodle42-app php /var/www/html/admin/cli/upgrade.php --non-interactive
+docker exec moodle42-app php /var/www/html/admin/cli/purge_caches.php
 ```
 
 ## Como funciona
 
-O plugin não cadastra tutores, mediadores ou polos. Ele lê dados já existentes no Moodle:
+O plugin não cadastra tutores, contatos de tutoria ou polos. Ele lê dados já existentes no Moodle:
 
 - usuários ativos matriculados na disciplina;
 - papéis atribuídos no contexto da disciplina;
@@ -46,34 +45,13 @@ O plugin não cadastra tutores, mediadores ou polos. Ele lê dados já existente
 
 ## Regras de domínio
 
-### Tutor Presencial
+### Tutoria
 
-Usuário ativo da disciplina com papel `mod_tutor`.
-
-### Mediador Pedagógico
-
-Usuário ativo da disciplina com papel `mod_medpdg`.
+Usuário ativo da disciplina com papel Moodle `teacher` (Moderador). Na interface pública, a função aparece como **Tutoria**, sem especificar gênero nem modalidade presencial.
 
 ### Polo
 
-Grupo da disciplina cujo nome contém `polo`, sem diferenciar maiúsculas/minúsculas.
-
-### Reoferta
-
-No modo automático, o plugin detecta reofertas pelo `shortname` da disciplina quando há token isolado `REO` ou `REO2`.
-
-Exemplos detectados:
-
-- `CISOL_23_2S_SA_(REO)_cb9e8`
-- `ABC_REO_2026`
-- `ABC-(REO2)-2026`
-- `ABC_REO2_x`
-
-Exemplos não detectados:
-
-- `TEOREOLOGIA_2026`
-- `PREOFERTA_2026`
-- `COREO_ABC`
+Grupo da disciplina cujo nome contém `polo`, sem diferenciar maiúsculas/minúsculas. Números finais entre parênteses, como `(20)`, são ignorados na exibição, mas o vínculo interno usa o nome real do grupo no Moodle.
 
 ## Configurações da atividade
 
@@ -81,74 +59,52 @@ Ao adicionar a atividade na disciplina, é possível configurar:
 
 - nome da atividade;
 - descrição;
-- título do painel do estudante;
-- se Tutor Presencial é esperado: Automático / Sim / Não;
-- se Mediador Pedagógico é esperado: Automático / Sim / Não.
+- título do painel do estudante.
 
-Regras do modo automático:
+A Tutoria é sempre esperada quando a atividade está presente.
 
-- Tutor Presencial é esperado.
-- Mediador Pedagógico é esperado em disciplinas comuns.
-- Mediador Pedagógico não é esperado em reofertas detectadas por `REO`/`REO2` no `shortname`.
+Campos legados de expectativa de tutoria/mediação podem existir no banco ou em backups antigos, mas não são exibidos no formulário nem usados para decidir a interface.
 
 ## Visualização do estudante
 
 O estudante vê primeiro a aba **Meu polo**, com:
 
 - nome do seu polo;
-- Tutor(es) Presencial(is) vinculados ao seu polo;
-- Mediador(es) Pedagógico(s) vinculados ao seu polo;
+- Tutoria vinculada ao seu polo;
 - opção de alternar para **Lista completa**.
 
-Se o estudante não estiver em nenhum polo, a aba **Meu polo** não usa a Lista completa como fallback.
+Se o estudante não estiver em nenhum polo, a aba **Meu polo** não usa a Lista completa como fallback, mas a Lista completa continua disponível.
 
 ## Visualização de professor/admin
 
-Usuários com perfil de gestão da disciplina veem a **Lista completa**, com a equipe vinculada à disciplina inteira.
+Usuários com perfil de gestão da disciplina veem a **Lista completa**, com a equipe vinculada à disciplina inteira. A lista mostra pessoas e os polos atendidos por cada uma; não agrupa por polo.
 
 ## Estados vazios
 
-Quando uma função é esperada, mas não há pessoa vinculada:
+Quando não há Tutoria vinculada:
 
-- na Lista completa: `não informado para a disciplina`;
-- em Meu polo: `não informado para seu polo`.
-
-Quando uma função não é esperada, sua seção não aparece.
-
-Se nenhuma função for esperada:
-
-- estudantes não veem conteúdo;
-- usuários com permissão de gerenciar atividades veem aviso operacional mínimo.
+- na Lista completa: `Tutoria não informada para a disciplina`;
+- em Meu polo: `Tutoria não informada para seu polo`.
 
 ## Testes e validação
 
-Validação final realizada:
-
-```text
-PHP lint: OK
-PHPUnit: 10 tests, 24 assertions
-Behat: 3 scenarios, 40 steps
-Grunt AMD: OK
-Upgrade Moodle: OK
-```
-
-Comandos úteis no ambiente Docker local:
+Comandos úteis para validação no ambiente Docker local:
 
 ```bash
 # PHP lint do plugin.
 find . -name '*.php' -not -path './.git/*' -print0 | xargs -0 -n1 php -l
 
 # PHPUnit.
-docker exec moodle45-app bash -lc 'cd /var/www/html && vendor/bin/phpunit mod/uemsinfotutoria/tests/team_data_test.php mod/uemsinfotutoria/tests/output_test.php'
+docker exec moodle42-app bash -lc 'cd /var/www/html && vendor/bin/phpunit mod/gepeminfortutoria/tests/team_data_test.php mod/gepeminfortutoria/tests/output_test.php'
 
 # Behat.
-docker exec moodle45-app bash -lc 'cd /var/www/html && vendor/bin/behat --config /var/www/behatdata/behatrun/behat/behat.yml --profile=chrome mod/uemsinfotutoria/tests/behat/inline_display.feature'
+docker exec moodle42-app bash -lc 'cd /var/www/html && vendor/bin/behat --config /var/www/behatdata/behatrun/behat/behat.yml --profile=chrome mod/gepeminfortutoria/tests/behat/inline_display.feature'
 
 # Compilar AMD com Node 22 no host.
 source ~/.nvm/nvm.sh
 nvm use 22.22.3
-cd /home/breno/docker/moodle45/moodle
-npx grunt amd --root=mod/uemsinfotutoria
+cd /home/breno/docker/moodle42/moodle
+npx grunt amd --root=mod/gepeminfortutoria
 ```
 
 ## Documentação complementar
@@ -160,8 +116,8 @@ npx grunt amd --root=mod/uemsinfotutoria
 
 ## Branch Moodle
 
-A branch estável para Moodle 4.5 é:
+A branch estável para Moodle 4.2 é:
 
 ```text
-MOODLE_405_STABLE
+MOODLE_402_STABLE
 ```

@@ -14,18 +14,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Student view toggle for mod_uemsinfotutoria.
+ * Student view toggle for mod_gepeminfortutoria.
  *
  * Animates height between "Meu polo" and "Lista completa" without reserving
  * the maximum height (which would create dead whitespace on the shorter view).
  *
- * @module     mod_uemsinfotutoria/view_toggle
+ * @module     mod_gepeminfortutoria/view_toggle
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 const SELECTORS = {
-    SHELL:   '[data-region="uemsinfotutoria-switcher"]',
+    SHELL:   '[data-region="gepeminfortutoria-switcher"]',
     STAGE:   '.uit-stage',
     BUTTON:  '[data-view]',
     PANEL:   '[data-panel]',

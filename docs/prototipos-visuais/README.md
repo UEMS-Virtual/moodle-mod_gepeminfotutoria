@@ -1,4 +1,4 @@
-# Protótipos visuais — mod_uems_info_tutoria
+# Protótipos visuais — mod_gepeminfortutoria
 
 Protótipos descartáveis para avaliar o visual do módulo no Moodle.
 

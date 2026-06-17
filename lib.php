@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library callbacks for mod_uemsinfotutoria.
+ * Library callbacks for mod_gepeminfortutoria.
  *
- * @package    mod_uemsinfotutoria
+ * @package    mod_gepeminfortutoria
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,7 +30,13 @@ defined('MOODLE_INTERNAL') || die();
  * @param string $feature Feature name.
  * @return mixed True if supported, null otherwise.
  */
-function uemsinfotutoria_supports(string $feature) {
+function gepeminfortutoria_supports(string $feature) {
+    // FEATURE_MOD_PURPOSE / MOD_PURPOSE_CONTENT were added after Moodle 4.2.
+    // Keep this callback loadable on 4.2 while still advertising the purpose on newer sites.
+    if (defined('FEATURE_MOD_PURPOSE') && $feature === FEATURE_MOD_PURPOSE) {
+        return defined('MOD_PURPOSE_CONTENT') ? MOD_PURPOSE_CONTENT : null;
+    }
+
     switch ($feature) {
         case FEATURE_MOD_INTRO:
         case FEATURE_SHOW_DESCRIPTION:
@@ -41,8 +47,6 @@ function uemsinfotutoria_supports(string $feature) {
             return false;
         case FEATURE_MOD_ARCHETYPE:
             return MOD_ARCHETYPE_RESOURCE;
-        case FEATURE_MOD_PURPOSE:
-            return MOD_PURPOSE_CONTENT;
         default:
             return null;
     }
@@ -57,13 +61,13 @@ function uemsinfotutoria_supports(string $feature) {
  * @param stdClass $coursemodule Course-module record.
  * @return cached_cm_info|null
  */
-function uemsinfotutoria_get_coursemodule_info(stdClass $coursemodule): ?cached_cm_info {
+function gepeminfortutoria_get_coursemodule_info(stdClass $coursemodule): ?cached_cm_info {
     global $DB;
 
     $instance = $DB->get_record(
-        'uemsinfotutoria',
+        'gepeminfortutoria',
         ['id' => $coursemodule->instance],
-        'id, name, intro, introformat, supporttitle, expecttutor, expectmediator'
+        'id, name, intro, introformat, supporttitle'
     );
     if (!$instance) {
         return null;
@@ -71,7 +75,7 @@ function uemsinfotutoria_get_coursemodule_info(stdClass $coursemodule): ?cached_
 
     $info = new cached_cm_info();
     $info->name = $instance->name;
-    $info->content = format_module_intro('uemsinfotutoria', $instance, $coursemodule->id, false);
+    $info->content = format_module_intro('gepeminfortutoria', $instance, $coursemodule->id, false);
     return $info;
 }
 
@@ -83,7 +87,7 @@ function uemsinfotutoria_get_coursemodule_info(stdClass $coursemodule): ?cached_
  *
  * @param cm_info $cm Course-module info object.
  */
-function uemsinfotutoria_cm_info_view(cm_info $cm): void {
+function gepeminfortutoria_cm_info_view(cm_info $cm): void {
     global $DB, $PAGE;
 
     if (!$cm->uservisible) {
@@ -91,55 +95,59 @@ function uemsinfotutoria_cm_info_view(cm_info $cm): void {
     }
 
     $context = context_module::instance($cm->id);
-    if (!has_capability('mod/uemsinfotutoria:view', $context)) {
+    if (!has_capability('mod/gepeminfortutoria:view', $context)) {
         return;
     }
 
-    $instance = $DB->get_record('uemsinfotutoria', ['id' => $cm->instance]);
+    $instance = $DB->get_record('gepeminfortutoria', ['id' => $cm->instance]);
     if (!$instance) {
-        $cm->set_custom_cmlist_item(true);
+        if (method_exists($cm, 'set_custom_cmlist_item')) {
+            $cm->set_custom_cmlist_item(true);
+        }
         return;
     }
 
     $course  = get_course($cm->course);
 
-    $renderer   = $PAGE->get_renderer('mod_uemsinfotutoria');
-    $renderable = new \mod_uemsinfotutoria\output\tutoria_page($instance, $cm, $course, $context);
+    $renderer   = $PAGE->get_renderer('mod_gepeminfortutoria');
+    $renderable = new \mod_gepeminfortutoria\output\tutoria_page($instance, $cm, $course, $context);
 
     $cm->set_content($renderer->render($renderable));
-    $cm->set_custom_cmlist_item(true);
+    if (method_exists($cm, 'set_custom_cmlist_item')) {
+        $cm->set_custom_cmlist_item(true);
+    }
 }
 
 /**
  * Add a new instance of the activity.
  *
  * @param stdClass $data Form data.
- * @param mod_uemsinfotutoria_mod_form|null $mform Form instance.
+ * @param mod_gepeminfortutoria_mod_form|null $mform Form instance.
  * @return int New instance id.
  */
-function uemsinfotutoria_add_instance(stdClass $data, ?mod_uemsinfotutoria_mod_form $mform = null): int {
+function gepeminfortutoria_add_instance(stdClass $data, ?mod_gepeminfortutoria_mod_form $mform = null): int {
     global $DB;
 
     $data->timecreated = time();
     $data->timemodified = $data->timecreated;
 
-    return $DB->insert_record('uemsinfotutoria', $data);
+    return $DB->insert_record('gepeminfortutoria', $data);
 }
 
 /**
  * Update an existing instance of the activity.
  *
  * @param stdClass $data Form data.
- * @param mod_uemsinfotutoria_mod_form|null $mform Form instance.
+ * @param mod_gepeminfortutoria_mod_form|null $mform Form instance.
  * @return bool
  */
-function uemsinfotutoria_update_instance(stdClass $data, ?mod_uemsinfotutoria_mod_form $mform = null): bool {
+function gepeminfortutoria_update_instance(stdClass $data, ?mod_gepeminfortutoria_mod_form $mform = null): bool {
     global $DB;
 
     $data->id = $data->instance;
     $data->timemodified = time();
 
-    return $DB->update_record('uemsinfotutoria', $data);
+    return $DB->update_record('gepeminfortutoria', $data);
 }
 
 /**
@@ -148,13 +156,13 @@ function uemsinfotutoria_update_instance(stdClass $data, ?mod_uemsinfotutoria_mo
  * @param int $id Instance id.
  * @return bool
  */
-function uemsinfotutoria_delete_instance(int $id): bool {
+function gepeminfortutoria_delete_instance(int $id): bool {
     global $DB;
 
-    if (!$DB->record_exists('uemsinfotutoria', ['id' => $id])) {
+    if (!$DB->record_exists('gepeminfortutoria', ['id' => $id])) {
         return false;
     }
 
-    $DB->delete_records('uemsinfotutoria', ['id' => $id]);
+    $DB->delete_records('gepeminfortutoria', ['id' => $id]);
     return true;
 }

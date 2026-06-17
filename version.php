@@ -15,18 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for mod_uemsinfotutoria.
+ * Version information for mod_gepeminfortutoria.
  *
- * @package    mod_uemsinfotutoria
+ * @package    mod_gepeminfortutoria
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'mod_uemsinfotutoria';
+$plugin->component = 'mod_gepeminfortutoria';
 $plugin->version = 2026051801;
-$plugin->requires = 2024100700;
-$plugin->supported = [405, 405];
+// Moodle 4.2.11 (2023042411) is the target deployment version.
+$plugin->requires = 2023042411;
+$plugin->supported = [402, 402];
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '4.5.3';
+$plugin->release = '4.2.11';

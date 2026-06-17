@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Test data generator for mod_uemsinfotutoria.
+ * Test data generator for mod_gepeminfortutoria.
  *
- * @package    mod_uemsinfotutoria
+ * @package    mod_gepeminfortutoria
  * @category   test
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,12 +28,12 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Tutoring information module data generator.
  *
- * @package    mod_uemsinfotutoria
+ * @package    mod_gepeminfortutoria
  * @category   test
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_uemsinfotutoria_generator extends testing_module_generator {
+class mod_gepeminfortutoria_generator extends testing_module_generator {
 
     /**
      * Create an activity instance for tests.
@@ -46,7 +46,7 @@ class mod_uemsinfotutoria_generator extends testing_module_generator {
         $record = (object) (array) $record;
 
         if (!isset($record->name)) {
-            $record->name = 'Equipe de Tutoria e Mediação';
+            $record->name = 'Equipe de Tutoria';
         }
         if (!isset($record->intro)) {
             $record->intro = '';
@@ -55,7 +55,7 @@ class mod_uemsinfotutoria_generator extends testing_module_generator {
             $record->introformat = FORMAT_HTML;
         }
         if (!isset($record->supporttitle)) {
-            $record->supporttitle = 'Sua Equipe de Tutoria e Mediação';
+            $record->supporttitle = 'Sua Tutoria';
         }
         if (!isset($record->expecttutor)) {
             $record->expecttutor = 0;

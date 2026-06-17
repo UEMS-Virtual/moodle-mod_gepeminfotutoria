@@ -5,27 +5,17 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace mod_uemsinfotutoria;
+namespace mod_gepeminfortutoria;
 
-use mod_uemsinfotutoria\local\team_data;
-use mod_uemsinfotutoria\output\tutoria_page;
+use mod_gepeminfortutoria\local\team_data;
+use mod_gepeminfortutoria\output\tutoria_page;
 
 /**
  * Tests for template export rules.
  *
- * @package    mod_uemsinfotutoria
- * @copyright  2026 UEMS Virtual
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     \mod_uemsinfotutoria\output\tutoria_page
+ * @package    mod_gepeminfortutoria
+ * @covers     \mod_gepeminfortutoria\output\tutoria_page
  */
 final class output_test extends \advanced_testcase {
 
@@ -39,25 +29,21 @@ final class output_test extends \advanced_testcase {
 
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
-        $module = $generator->create_module('uemsinfotutoria', [
-            'course' => $course->id,
-            'expecttutor' => team_data::EXPECT_YES,
-            'expectmediator' => team_data::EXPECT_NO,
-        ]);
-        $cm = get_coursemodule_from_instance('uemsinfotutoria', $module->id, $course->id, false, MUST_EXIST);
+        $module = $generator->create_module('gepeminfortutoria', ['course' => $course->id]);
+        $cm = get_coursemodule_from_instance('gepeminfortutoria', $module->id, $course->id, false, MUST_EXIST);
         $context = \context_module::instance($cm->id);
         $PAGE->set_context($context);
 
-        $tutorroleid = $this->ensure_role(team_data::ROLE_TUTOR, 'Tutor Presencial');
+        $tutorroleid = $this->ensure_role(team_data::ROLE_TUTOR, 'Moderador');
         $student = $generator->create_and_enrol($course, 'student');
-        $tutor = $generator->create_user(['firstname' => 'Ana', 'lastname' => 'Tutora']);
+        $tutor = $generator->create_user(['firstname' => 'Ana', 'lastname' => 'Tutoria']);
         $generator->enrol_user($tutor->id, $course->id, $tutorroleid);
         $polo = $generator->create_group(['courseid' => $course->id, 'name' => 'Polo Bataguassu']);
         groups_add_member($polo, $tutor);
 
         $this->setUser($student);
-        $renderable = new tutoria_page($module, $cm, $course, $context, $student->id);
-        $data = $renderable->export_for_template($PAGE->get_renderer('core'));
+        $data = (new tutoria_page($module, $cm, $course, $context, $student->id))
+            ->export_for_template($PAGE->get_renderer('core'));
 
         $this->assertTrue($data['isstudent']);
         $this->assertFalse($data['has_polo']);
@@ -67,21 +53,19 @@ final class output_test extends \advanced_testcase {
         $this->assertCount(1, $data['all_tutors']);
     }
 
-    public function test_student_panel_uses_new_default_title_and_hides_empty_full_intro(): void {
+    public function test_student_panel_uses_default_title_and_tutoring_label(): void {
         global $PAGE;
 
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
-        $module = $generator->create_module('uemsinfotutoria', [
+        $module = $generator->create_module('gepeminfortutoria', [
             'course' => $course->id,
             'intro' => '',
             'introformat' => FORMAT_HTML,
             'supporttitle' => '',
-            'expecttutor' => team_data::EXPECT_YES,
-            'expectmediator' => team_data::EXPECT_YES,
         ]);
         $module->intro = '';
-        $cm = get_coursemodule_from_instance('uemsinfotutoria', $module->id, $course->id, false, MUST_EXIST);
+        $cm = get_coursemodule_from_instance('gepeminfortutoria', $module->id, $course->id, false, MUST_EXIST);
         $context = \context_module::instance($cm->id);
         $PAGE->set_context($context);
 
@@ -91,11 +75,10 @@ final class output_test extends \advanced_testcase {
         $data = (new tutoria_page($module, $cm, $course, $context, $student->id))
             ->export_for_template($PAGE->get_renderer('core'));
 
-        $this->assertSame(get_string('seuponto', 'uemsinfotutoria'), $data['supporttitle']);
+        $this->assertSame(get_string('seuponto', 'gepeminfortutoria'), $data['supporttitle']);
         $this->assertSame('', $data['full_intro']);
         $this->assertFalse($data['has_full_intro']);
-        $this->assertSame(get_string('mediadorespedagogicos', 'uemsinfotutoria'), $data['mine_mediator_label']);
-        $this->assertSame(get_string('tutorespresenciais', 'uemsinfotutoria'), $data['mine_tutor_label']);
+        $this->assertSame(get_string('tutoria', 'gepeminfortutoria'), $data['mine_tutor_label']);
     }
 
     public function test_full_intro_is_shown_when_configured(): void {
@@ -103,14 +86,12 @@ final class output_test extends \advanced_testcase {
 
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
-        $module = $generator->create_module('uemsinfotutoria', [
+        $module = $generator->create_module('gepeminfortutoria', [
             'course' => $course->id,
             'intro' => 'Subtítulo opcional da lista completa',
             'introformat' => FORMAT_HTML,
-            'expecttutor' => team_data::EXPECT_YES,
-            'expectmediator' => team_data::EXPECT_NO,
         ]);
-        $cm = get_coursemodule_from_instance('uemsinfotutoria', $module->id, $course->id, false, MUST_EXIST);
+        $cm = get_coursemodule_from_instance('gepeminfortutoria', $module->id, $course->id, false, MUST_EXIST);
         $context = \context_module::instance($cm->id);
         $PAGE->set_context($context);
 
@@ -129,31 +110,27 @@ final class output_test extends \advanced_testcase {
 
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
-        $module = $generator->create_module('uemsinfotutoria', [
-            'course' => $course->id,
-            'expecttutor' => team_data::EXPECT_YES,
-            'expectmediator' => team_data::EXPECT_NO,
-        ]);
-        $cm = get_coursemodule_from_instance('uemsinfotutoria', $module->id, $course->id, false, MUST_EXIST);
+        $module = $generator->create_module('gepeminfortutoria', ['course' => $course->id]);
+        $cm = get_coursemodule_from_instance('gepeminfortutoria', $module->id, $course->id, false, MUST_EXIST);
         $context = \context_module::instance($cm->id);
         $PAGE->set_context($context);
 
-        $tutorroleid = $this->ensure_role(team_data::ROLE_TUTOR, 'Tutor Presencial');
+        $tutorroleid = $this->ensure_role(team_data::ROLE_TUTOR, 'Moderador');
         $student = $generator->create_and_enrol($course, 'student');
         $teacher = $generator->create_and_enrol($course, 'editingteacher');
-        $tutor = $generator->create_user(['firstname' => 'Ana', 'lastname' => 'Tutora']);
+        $tutor = $generator->create_user(['firstname' => 'Ana', 'lastname' => 'Tutoria']);
         $generator->enrol_user($tutor->id, $course->id, $tutorroleid);
 
         $rawnames = [
-            'POLO UAB DE BATAGUASSU',
-            'POLO UAB DE CAMPO GRANDE',
+            'POLO UAB DE BATAGUASSU (20)',
+            'POLO UAB DE CAMPO GRANDE (96)',
             'POLO ASSOCIADO DE NOVA ANDRADINA',
             'POLO DE RIO BRILHANTE',
         ];
         foreach ($rawnames as $rawname) {
             $group = $generator->create_group(['courseid' => $course->id, 'name' => $rawname]);
             groups_add_member($group, $tutor);
-            if ($rawname === 'POLO UAB DE CAMPO GRANDE') {
+            if ($rawname === 'POLO UAB DE CAMPO GRANDE (96)') {
                 groups_add_member($group, $student);
             }
         }
@@ -174,17 +151,16 @@ final class output_test extends \advanced_testcase {
         $this->assertSame(['Bataguassu', 'Campo Grande', 'Nova Andradina', 'Rio Brilhante'], $polonames);
     }
 
-    public function test_non_expected_functions_are_hidden_and_manager_gets_notice_when_none_expected(): void {
+    public function test_tutoring_is_always_expected_even_without_contacts(): void {
         global $PAGE;
 
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
-        $module = $generator->create_module('uemsinfotutoria', [
+        $module = $generator->create_module('gepeminfortutoria', [
             'course' => $course->id,
             'expecttutor' => team_data::EXPECT_NO,
-            'expectmediator' => team_data::EXPECT_NO,
         ]);
-        $cm = get_coursemodule_from_instance('uemsinfotutoria', $module->id, $course->id, false, MUST_EXIST);
+        $cm = get_coursemodule_from_instance('gepeminfortutoria', $module->id, $course->id, false, MUST_EXIST);
         $context = \context_module::instance($cm->id);
         $PAGE->set_context($context);
 
@@ -193,17 +169,9 @@ final class output_test extends \advanced_testcase {
         $studentdata = (new tutoria_page($module, $cm, $course, $context, $student->id))
             ->export_for_template($PAGE->get_renderer('core'));
 
-        $this->assertFalse($studentdata['hascontent']);
-        $this->assertFalse($studentdata['shownotice']);
-
-        $editingteacher = $generator->create_and_enrol($course, 'editingteacher');
-        $this->setUser($editingteacher);
-        $teacherdata = (new tutoria_page($module, $cm, $course, $context, $editingteacher->id))
-            ->export_for_template($PAGE->get_renderer('core'));
-
-        $this->assertFalse($teacherdata['hascontent']);
-        $this->assertTrue($teacherdata['shownotice']);
-        $this->assertSame(get_string('nofunctionsexpected', 'uemsinfotutoria'), $teacherdata['nofunctionsexpected']);
+        $this->assertTrue($studentdata['hascontent']);
+        $this->assertFalse($studentdata['all_has_tutors']);
+        $this->assertSame(get_string('tutorianotinformedcourse', 'gepeminfortutoria'), $studentdata['all_empty_tutors_message']);
     }
 
     /**
