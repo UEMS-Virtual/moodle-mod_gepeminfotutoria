@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Restore task for mod_gepeminfortutoria.
+ * Restore task for mod_gepeminfotutoria.
  *
- * @package    mod_gepeminfortutoria
+ * @package    mod_gepeminfotutoria
  * @category   backup
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,12 +25,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/mod/gepeminfortutoria/backup/moodle2/restore_gepeminfortutoria_stepslib.php');
+require_once($CFG->dirroot . '/mod/gepeminfotutoria/backup/moodle2/restore_gepeminfotutoria_stepslib.php');
 
 /**
- * Provides the steps to restore one gepeminfortutoria activity instance.
+ * Provides the steps to restore one gepeminfotutoria activity instance.
  */
-class restore_gepeminfortutoria_activity_task extends restore_activity_task {
+class restore_gepeminfotutoria_activity_task extends restore_activity_task {
 
     /**
      * No specific restore settings.
@@ -42,9 +42,9 @@ class restore_gepeminfortutoria_activity_task extends restore_activity_task {
      * Add the activity structure step.
      */
     protected function define_my_steps() {
-        $this->add_step(new restore_gepeminfortutoria_activity_structure_step(
-            'gepeminfortutoria_structure',
-            'gepeminfortutoria.xml'
+        $this->add_step(new restore_gepeminfotutoria_activity_structure_step(
+            'gepeminfotutoria_structure',
+            'gepeminfotutoria.xml'
         ));
     }
 
@@ -55,7 +55,7 @@ class restore_gepeminfortutoria_activity_task extends restore_activity_task {
      */
     public static function define_decode_contents() {
         return [
-            new restore_decode_content('gepeminfortutoria', ['intro'], 'gepeminfortutoria'),
+            new restore_decode_content('gepeminfotutoria', ['intro'], 'gepeminfotutoria'),
         ];
     }
 
@@ -66,8 +66,8 @@ class restore_gepeminfortutoria_activity_task extends restore_activity_task {
      */
     public static function define_decode_rules() {
         return [
-            new restore_decode_rule('GEPEMINFORTUTORIAVIEWBYID', '/mod/gepeminfortutoria/view.php?id=$1', 'course_module'),
-            new restore_decode_rule('GEPEMINFORTUTORIAINDEX', '/mod/gepeminfortutoria/index.php?id=$1', 'course'),
+            new restore_decode_rule('GEPEMINFOTUTORIAVIEWBYID', '/mod/gepeminfotutoria/view.php?id=$1', 'course_module'),
+            new restore_decode_rule('GEPEMINFOTUTORIAINDEX', '/mod/gepeminfotutoria/index.php?id=$1', 'course'),
         ];
     }
 }

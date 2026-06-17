@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * List all instances of mod_gepeminfortutoria in a course.
+ * List all instances of mod_gepeminfotutoria in a course.
  *
- * @package    mod_gepeminfortutoria
+ * @package    mod_gepeminfotutoria
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -31,12 +31,12 @@ $course = $DB->get_record('course', ['id' => $id], '*', MUST_EXIST);
 require_course_login($course, true);
 $PAGE->set_pagelayout('incourse');
 
-$strplural = get_string('modulenameplural', 'gepeminfortutoria');
+$strplural = get_string('modulenameplural', 'gepeminfotutoria');
 $strname = get_string('name');
 $strintro = get_string('moduleintro');
 $strlastmodified = get_string('lastmodified');
 
-$PAGE->set_url('/mod/gepeminfortutoria/index.php', ['id' => $course->id]);
+$PAGE->set_url('/mod/gepeminfotutoria/index.php', ['id' => $course->id]);
 $PAGE->set_title($course->shortname . ': ' . $strplural);
 $PAGE->set_heading($course->fullname);
 $PAGE->navbar->add($strplural);
@@ -44,7 +44,7 @@ $PAGE->navbar->add($strplural);
 echo $OUTPUT->header();
 echo $OUTPUT->heading($strplural);
 
-if (!$instances = get_all_instances_in_course('gepeminfortutoria', $course)) {
+if (!$instances = get_all_instances_in_course('gepeminfotutoria', $course)) {
     notice(get_string('thereareno', 'moodle', $strplural), new moodle_url('/course/view.php', ['id' => $course->id]));
 }
 
@@ -83,7 +83,7 @@ foreach ($instances as $instance) {
 
     $class = $instance->visible ? '' : 'dimmed';
     $link = html_writer::link(
-        new moodle_url('/mod/gepeminfortutoria/view.php', ['id' => $cm->id]),
+        new moodle_url('/mod/gepeminfotutoria/view.php', ['id' => $cm->id]),
         format_string($instance->name),
         ['class' => $class]
     );
@@ -91,7 +91,7 @@ foreach ($instances as $instance) {
     $table->data[] = [
         $printsection,
         $link,
-        format_module_intro('gepeminfortutoria', $instance, $cm->id),
+        format_module_intro('gepeminfotutoria', $instance, $cm->id),
     ];
 }
 

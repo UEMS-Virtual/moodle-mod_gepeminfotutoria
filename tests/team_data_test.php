@@ -6,15 +6,15 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-namespace mod_gepeminfortutoria;
+namespace mod_gepeminfotutoria;
 
-use mod_gepeminfortutoria\local\team_data;
+use mod_gepeminfotutoria\local\team_data;
 
 /**
  * Tests for tutoring team data rules.
  *
- * @package    mod_gepeminfortutoria
- * @covers     \mod_gepeminfortutoria\local\team_data
+ * @package    mod_gepeminfotutoria
+ * @covers     \mod_gepeminfotutoria\local\team_data
  */
 final class team_data_test extends \advanced_testcase {
 
@@ -46,7 +46,7 @@ final class team_data_test extends \advanced_testcase {
     public function test_get_team_returns_active_teacher_role_users_with_their_polos(): void {
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
-        $module = $generator->create_module('gepeminfortutoria', ['course' => $course->id]);
+        $module = $generator->create_module('gepeminfotutoria', ['course' => $course->id]);
         $context = \context_module::instance($module->cmid);
 
         $tutorroleid = $this->ensure_role(team_data::ROLE_TUTOR, 'Moderador');

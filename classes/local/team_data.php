@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Team data service for mod_gepeminfortutoria.
+ * Team data service for mod_gepeminfotutoria.
  *
- * @package    mod_gepeminfortutoria
+ * @package    mod_gepeminfotutoria
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_gepeminfortutoria\local;
+namespace mod_gepeminfotutoria\local;
 
 defined('MOODLE_INTERNAL') || die();
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Behat no Projeto — mod_gepeminfortutoria</title>
+  <title>Behat no Projeto — mod_gepeminfotutoria</title>
   <style>
     :root {
       --primary: #006b5f;
@@ -109,7 +109,7 @@
 <body>
 <main>
   <header>
-    <div class="kicker">mod_gepeminfortutoria</div>
+    <div class="kicker">mod_gepeminfotutoria</div>
     <h1>Behat no Projeto</h1>
     <p>Uma explicação didática do que é Behat, por que ele existe no Moodle e como ele foi usado para validar o plugin de Informações de Tutoria.</p>
   </header>
@@ -210,7 +210,7 @@ And I should see "Polo Bataguassu"</code></pre>
       <li>os papéis institucionais <code>mod_tutor</code> e <code>mod_medpdg</code>;</li>
       <li>um grupo chamado <code>Polo Bataguassu</code>;</li>
       <li>os membros desse grupo;</li>
-      <li>uma instância da atividade <code>gepeminfortutoria</code>.</li>
+      <li>uma instância da atividade <code>gepeminfotutoria</code>.</li>
     </ul>
     <p>Isso significa que o teste não depende de dados manuais existentes no Moodle. Ele monta tudo que precisa, roda, e depois o ambiente de teste é limpo pelo Moodle.</p>
   </section>
@@ -304,13 +304,13 @@ $CFG-&gt;behat_profiles = array(
   'cd /var/www/html &amp;&amp; vendor/bin/behat \
    --config /var/www/behatdata/behatrun/behat/behat.yml \
    --profile=chrome \
-   mod/gepeminfortutoria/tests/behat/inline_display.feature'</code></pre>
+   mod/gepeminfotutoria/tests/behat/inline_display.feature'</code></pre>
 
     <h3>Rodar só cenários sem JavaScript</h3>
     <pre><code>docker exec moodle42-app bash -lc \
   'cd /var/www/html &amp;&amp; vendor/bin/behat \
    --config /var/www/behatdata/behatrun/behat/behat.yml \
-   mod/gepeminfortutoria/tests/behat/inline_display.feature \
+   mod/gepeminfotutoria/tests/behat/inline_display.feature \
    --tags="~@javascript"'</code></pre>
   </section>
 

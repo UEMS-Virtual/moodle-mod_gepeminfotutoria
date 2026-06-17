@@ -6,16 +6,16 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-namespace mod_gepeminfortutoria;
+namespace mod_gepeminfotutoria;
 
-use mod_gepeminfortutoria\local\team_data;
-use mod_gepeminfortutoria\output\tutoria_page;
+use mod_gepeminfotutoria\local\team_data;
+use mod_gepeminfotutoria\output\tutoria_page;
 
 /**
  * Tests for template export rules.
  *
- * @package    mod_gepeminfortutoria
- * @covers     \mod_gepeminfortutoria\output\tutoria_page
+ * @package    mod_gepeminfotutoria
+ * @covers     \mod_gepeminfotutoria\output\tutoria_page
  */
 final class output_test extends \advanced_testcase {
 
@@ -29,8 +29,8 @@ final class output_test extends \advanced_testcase {
 
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
-        $module = $generator->create_module('gepeminfortutoria', ['course' => $course->id]);
-        $cm = get_coursemodule_from_instance('gepeminfortutoria', $module->id, $course->id, false, MUST_EXIST);
+        $module = $generator->create_module('gepeminfotutoria', ['course' => $course->id]);
+        $cm = get_coursemodule_from_instance('gepeminfotutoria', $module->id, $course->id, false, MUST_EXIST);
         $context = \context_module::instance($cm->id);
         $PAGE->set_context($context);
 
@@ -58,14 +58,14 @@ final class output_test extends \advanced_testcase {
 
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
-        $module = $generator->create_module('gepeminfortutoria', [
+        $module = $generator->create_module('gepeminfotutoria', [
             'course' => $course->id,
             'intro' => '',
             'introformat' => FORMAT_HTML,
             'supporttitle' => '',
         ]);
         $module->intro = '';
-        $cm = get_coursemodule_from_instance('gepeminfortutoria', $module->id, $course->id, false, MUST_EXIST);
+        $cm = get_coursemodule_from_instance('gepeminfotutoria', $module->id, $course->id, false, MUST_EXIST);
         $context = \context_module::instance($cm->id);
         $PAGE->set_context($context);
 
@@ -75,10 +75,10 @@ final class output_test extends \advanced_testcase {
         $data = (new tutoria_page($module, $cm, $course, $context, $student->id))
             ->export_for_template($PAGE->get_renderer('core'));
 
-        $this->assertSame(get_string('seuponto', 'gepeminfortutoria'), $data['supporttitle']);
+        $this->assertSame(get_string('seuponto', 'gepeminfotutoria'), $data['supporttitle']);
         $this->assertSame('', $data['full_intro']);
         $this->assertFalse($data['has_full_intro']);
-        $this->assertSame(get_string('tutoria', 'gepeminfortutoria'), $data['mine_tutor_label']);
+        $this->assertSame(get_string('tutoria', 'gepeminfotutoria'), $data['mine_tutor_label']);
     }
 
     public function test_full_intro_is_shown_when_configured(): void {
@@ -86,12 +86,12 @@ final class output_test extends \advanced_testcase {
 
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
-        $module = $generator->create_module('gepeminfortutoria', [
+        $module = $generator->create_module('gepeminfotutoria', [
             'course' => $course->id,
             'intro' => 'Subtítulo opcional da lista completa',
             'introformat' => FORMAT_HTML,
         ]);
-        $cm = get_coursemodule_from_instance('gepeminfortutoria', $module->id, $course->id, false, MUST_EXIST);
+        $cm = get_coursemodule_from_instance('gepeminfotutoria', $module->id, $course->id, false, MUST_EXIST);
         $context = \context_module::instance($cm->id);
         $PAGE->set_context($context);
 
@@ -110,8 +110,8 @@ final class output_test extends \advanced_testcase {
 
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
-        $module = $generator->create_module('gepeminfortutoria', ['course' => $course->id]);
-        $cm = get_coursemodule_from_instance('gepeminfortutoria', $module->id, $course->id, false, MUST_EXIST);
+        $module = $generator->create_module('gepeminfotutoria', ['course' => $course->id]);
+        $cm = get_coursemodule_from_instance('gepeminfotutoria', $module->id, $course->id, false, MUST_EXIST);
         $context = \context_module::instance($cm->id);
         $PAGE->set_context($context);
 
@@ -156,11 +156,11 @@ final class output_test extends \advanced_testcase {
 
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
-        $module = $generator->create_module('gepeminfortutoria', [
+        $module = $generator->create_module('gepeminfotutoria', [
             'course' => $course->id,
             'expecttutor' => team_data::EXPECT_NO,
         ]);
-        $cm = get_coursemodule_from_instance('gepeminfortutoria', $module->id, $course->id, false, MUST_EXIST);
+        $cm = get_coursemodule_from_instance('gepeminfotutoria', $module->id, $course->id, false, MUST_EXIST);
         $context = \context_module::instance($cm->id);
         $PAGE->set_context($context);
 
@@ -171,7 +171,7 @@ final class output_test extends \advanced_testcase {
 
         $this->assertTrue($studentdata['hascontent']);
         $this->assertFalse($studentdata['all_has_tutors']);
-        $this->assertSame(get_string('tutorianotinformedcourse', 'gepeminfortutoria'), $studentdata['all_empty_tutors_message']);
+        $this->assertSame(get_string('tutorianotinformedcourse', 'gepeminfotutoria'), $studentdata['all_empty_tutors_message']);
     }
 
     /**

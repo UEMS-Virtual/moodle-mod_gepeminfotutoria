@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Backup task for mod_gepeminfortutoria.
+ * Backup task for mod_gepeminfotutoria.
  *
- * @package    mod_gepeminfortutoria
+ * @package    mod_gepeminfotutoria
  * @category   backup
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,12 +25,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/mod/gepeminfortutoria/backup/moodle2/backup_gepeminfortutoria_stepslib.php');
+require_once($CFG->dirroot . '/mod/gepeminfotutoria/backup/moodle2/backup_gepeminfotutoria_stepslib.php');
 
 /**
- * Provides the steps to backup one gepeminfortutoria activity instance.
+ * Provides the steps to backup one gepeminfotutoria activity instance.
  */
-class backup_gepeminfortutoria_activity_task extends backup_activity_task {
+class backup_gepeminfotutoria_activity_task extends backup_activity_task {
 
     /**
      * No specific backup settings.
@@ -42,9 +42,9 @@ class backup_gepeminfortutoria_activity_task extends backup_activity_task {
      * Add the activity structure step.
      */
     protected function define_my_steps() {
-        $this->add_step(new backup_gepeminfortutoria_activity_structure_step(
-            'gepeminfortutoria_structure',
-            'gepeminfortutoria.xml'
+        $this->add_step(new backup_gepeminfotutoria_activity_structure_step(
+            'gepeminfotutoria_structure',
+            'gepeminfotutoria.xml'
         ));
     }
 
@@ -59,11 +59,11 @@ class backup_gepeminfortutoria_activity_task extends backup_activity_task {
 
         $base = preg_quote($CFG->wwwroot, '/');
 
-        $search = '/(' . $base . '\/mod\/gepeminfortutoria\/index.php\?id=)([0-9]+)/';
-        $content = preg_replace($search, '$@GEPEMINFORTUTORIAINDEX*$2@$', $content);
+        $search = '/(' . $base . '\/mod\/gepeminfotutoria\/index.php\?id=)([0-9]+)/';
+        $content = preg_replace($search, '$@GEPEMINFOTUTORIAINDEX*$2@$', $content);
 
-        $search = '/(' . $base . '\/mod\/gepeminfortutoria\/view.php\?id=)([0-9]+)/';
-        $content = preg_replace($search, '$@GEPEMINFORTUTORIAVIEWBYID*$2@$', $content);
+        $search = '/(' . $base . '\/mod\/gepeminfotutoria\/view.php\?id=)([0-9]+)/';
+        $content = preg_replace($search, '$@GEPEMINFOTUTORIAVIEWBYID*$2@$', $content);
 
         return $content;
     }

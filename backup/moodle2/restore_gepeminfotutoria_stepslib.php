@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Restore steps for mod_gepeminfortutoria.
+ * Restore steps for mod_gepeminfotutoria.
  *
- * @package    mod_gepeminfortutoria
+ * @package    mod_gepeminfotutoria
  * @category   backup
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Structure step to restore one gepeminfortutoria activity instance.
+ * Structure step to restore one gepeminfotutoria activity instance.
  */
-class restore_gepeminfortutoria_activity_structure_step extends restore_activity_structure_step {
+class restore_gepeminfotutoria_activity_structure_step extends restore_activity_structure_step {
 
     /**
      * Define the paths to restore.
@@ -37,7 +37,7 @@ class restore_gepeminfortutoria_activity_structure_step extends restore_activity
      */
     protected function define_structure() {
         $paths = [];
-        $paths[] = new restore_path_element('gepeminfortutoria', '/activity/gepeminfortutoria');
+        $paths[] = new restore_path_element('gepeminfotutoria', '/activity/gepeminfotutoria');
 
         return $this->prepare_activity_structure($paths);
     }
@@ -47,13 +47,13 @@ class restore_gepeminfortutoria_activity_structure_step extends restore_activity
      *
      * @param array $data Restored data.
      */
-    protected function process_gepeminfortutoria($data) {
+    protected function process_gepeminfotutoria($data) {
         global $DB;
 
         $data = (object) $data;
         $data->course = $this->get_courseid();
 
-        $newitemid = $DB->insert_record('gepeminfortutoria', $data);
+        $newitemid = $DB->insert_record('gepeminfotutoria', $data);
         $this->apply_activity_instance($newitemid);
     }
 
@@ -61,6 +61,6 @@ class restore_gepeminfortutoria_activity_structure_step extends restore_activity
      * Restore related files.
      */
     protected function after_execute() {
-        $this->add_related_files('mod_gepeminfortutoria', 'intro', null);
+        $this->add_related_files('mod_gepeminfotutoria', 'intro', null);
     }
 }

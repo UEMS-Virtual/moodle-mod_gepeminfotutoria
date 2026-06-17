@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Backup steps for mod_gepeminfortutoria.
+ * Backup steps for mod_gepeminfotutoria.
  *
- * @package    mod_gepeminfortutoria
+ * @package    mod_gepeminfotutoria
  * @category   backup
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,15 +28,15 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Defines the complete activity structure for backup.
  */
-class backup_gepeminfortutoria_activity_structure_step extends backup_activity_structure_step {
+class backup_gepeminfotutoria_activity_structure_step extends backup_activity_structure_step {
 
     /**
-     * Define the structure stored in gepeminfortutoria.xml.
+     * Define the structure stored in gepeminfotutoria.xml.
      *
      * @return backup_nested_element
      */
     protected function define_structure() {
-        $gepeminfortutoria = new backup_nested_element('gepeminfortutoria', ['id'], [
+        $gepeminfotutoria = new backup_nested_element('gepeminfotutoria', ['id'], [
             'course',
             'name',
             'intro',
@@ -48,9 +48,9 @@ class backup_gepeminfortutoria_activity_structure_step extends backup_activity_s
             'timemodified',
         ]);
 
-        $gepeminfortutoria->set_source_table('gepeminfortutoria', ['id' => backup::VAR_ACTIVITYID]);
-        $gepeminfortutoria->annotate_files('mod_gepeminfortutoria', 'intro', null);
+        $gepeminfotutoria->set_source_table('gepeminfotutoria', ['id' => backup::VAR_ACTIVITYID]);
+        $gepeminfotutoria->annotate_files('mod_gepeminfotutoria', 'intro', null);
 
-        return $this->prepare_activity_structure($gepeminfortutoria);
+        return $this->prepare_activity_structure($gepeminfotutoria);
     }
 }

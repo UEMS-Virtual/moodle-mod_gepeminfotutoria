@@ -1,4 +1,4 @@
-# mod_gepeminfortutoria
+# mod_gepeminfotutoria
 
 Plugin Moodle para Moodle 4.2.11 que exibe, dentro da disciplina, contatos de Tutoria vinculados aos polos.
 
@@ -7,20 +7,20 @@ A experiência principal é inline, no estilo Label: a informação aparece dire
 ## Requisitos
 
 - Moodle 4.2.11.
-- Plugin instalado em `mod/gepeminfortutoria`.
+- Plugin instalado em `mod/gepeminfotutoria`.
 - Papel Moodle `teacher` — Moderador, exibido publicamente como **Tutoria**.
 - Polos representados por grupos do curso cujo nome contém `polo`.
 - Branch estável: `MOODLE_402_STABLE`.
 
 ## Instalação
 
-A pasta do plugin dentro do Moodle deve se chamar `gepeminfortutoria`.
+A pasta do plugin dentro do Moodle deve se chamar `gepeminfotutoria`.
 
 Exemplo usando Git:
 
 ```bash
 cd /caminho/do/moodle/mod
-git clone -b MOODLE_402_STABLE https://github.com/UEMS-Virtual/moodle-mod_gepeminfotutoria.git gepeminfortutoria
+git clone -b MOODLE_402_STABLE https://github.com/UEMS-Virtual/moodle-mod_gepeminfotutoria.git gepeminfotutoria
 cd /caminho/do/moodle
 php admin/cli/upgrade.php
 php admin/cli/purge_caches.php
@@ -95,16 +95,16 @@ Comandos úteis para validação no ambiente Docker local:
 find . -name '*.php' -not -path './.git/*' -print0 | xargs -0 -n1 php -l
 
 # PHPUnit.
-docker exec moodle42-app bash -lc 'cd /var/www/html && vendor/bin/phpunit mod/gepeminfortutoria/tests/team_data_test.php mod/gepeminfortutoria/tests/output_test.php'
+docker exec moodle42-app bash -lc 'cd /var/www/html && vendor/bin/phpunit mod/gepeminfotutoria/tests/team_data_test.php mod/gepeminfotutoria/tests/output_test.php'
 
 # Behat.
-docker exec moodle42-app bash -lc 'cd /var/www/html && vendor/bin/behat --config /var/www/behatdata/behatrun/behat/behat.yml --profile=chrome mod/gepeminfortutoria/tests/behat/inline_display.feature'
+docker exec moodle42-app bash -lc 'cd /var/www/html && vendor/bin/behat --config /var/www/behatdata/behatrun/behat/behat.yml --profile=chrome mod/gepeminfotutoria/tests/behat/inline_display.feature'
 
 # Compilar AMD com Node 22 no host.
 source ~/.nvm/nvm.sh
 nvm use 22.22.3
 cd /home/breno/docker/moodle42/moodle
-npx grunt amd --root=mod/gepeminfortutoria
+npx grunt amd --root=mod/gepeminfotutoria
 ```
 
 ## Documentação complementar

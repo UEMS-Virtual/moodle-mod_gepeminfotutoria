@@ -1,4 +1,4 @@
-# Protótipos visuais — mod_gepeminfortutoria
+# Protótipos visuais — mod_gepeminfotutoria
 
 Protótipos descartáveis para avaliar o visual do módulo no Moodle.
 

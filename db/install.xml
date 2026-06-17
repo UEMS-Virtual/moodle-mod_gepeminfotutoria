@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/gepeminfortutoria/db" VERSION="2026051600" COMMENT="XMLDB file for Moodle mod_gepeminfortutoria"
+<XMLDB PATH="mod/gepeminfotutoria/db" VERSION="2026051600" COMMENT="XMLDB file for Moodle mod_gepeminfotutoria"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
   <TABLES>
-    <TABLE NAME="gepeminfortutoria" COMMENT="Instances of the tutoring information activity">
+    <TABLE NAME="gepeminfotutoria" COMMENT="Instances of the tutoring information activity">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Course ID"/>

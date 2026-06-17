@@ -1,4 +1,4 @@
-@mod @mod_gepeminfortutoria
+@mod @mod_gepeminfotutoria
 Feature: Display tutoring information inline in the course
   In order to find support contacts without extra navigation
   As a course participant
@@ -26,7 +26,7 @@ Feature: Display tutoring information inline in the course
       | student1  | POLO1 |
       | tutor1    | POLO1 |
     And the following "activity" exists:
-      | activity       | gepeminfortutoria |
+      | activity       | gepeminfotutoria |
       | course         | C1                 |
       | idnumber       | UIT1               |
       | name           | Tutoring Team      |

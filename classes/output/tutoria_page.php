@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Renderable page for mod_gepeminfortutoria.
+ * Renderable page for mod_gepeminfotutoria.
  *
- * @package    mod_gepeminfortutoria
+ * @package    mod_gepeminfotutoria
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_gepeminfortutoria\output;
+namespace mod_gepeminfotutoria\output;
 
-use mod_gepeminfortutoria\local\team_data;
+use mod_gepeminfotutoria\local\team_data;
 use stdClass;
 
 /**
@@ -86,7 +86,7 @@ class tutoria_page implements \renderable, \templatable {
 
         $supporttitle = trim($this->instance->supporttitle ?? '');
         if ($supporttitle === '') {
-            $supporttitle = get_string('seuponto', 'gepeminfortutoria');
+            $supporttitle = get_string('seuponto', 'gepeminfotutoria');
         }
 
         $fullintro = trim($this->instance->intro ?? '');
@@ -102,7 +102,7 @@ class tutoria_page implements \renderable, \templatable {
             'show_tutors' => true,
             'all_tutors' => $tutors_data,
             'all_has_tutors' => !empty($tutors_data),
-            'all_empty_tutors_message' => get_string('tutorianotinformedcourse', 'gepeminfortutoria'),
+            'all_empty_tutors_message' => get_string('tutorianotinformedcourse', 'gepeminfotutoria'),
             'full_intro' => $fullintro,
             'has_full_intro' => $fullintro !== '',
         ];
@@ -119,9 +119,9 @@ class tutoria_page implements \renderable, \templatable {
                 'has_polo'            => !empty($polo_name),
                 'mine_tutors'         => $mine_tutors,
                 'mine_has_tutors'     => !empty($mine_tutors),
-                'mine_tutor_label'    => get_string('tutoria', 'gepeminfortutoria'),
-                'mine_empty_tutors_message' => get_string('tutorianotinformedpolo', 'gepeminfortutoria'),
-                'nopolohelp' => get_string('nopolohelp', 'gepeminfortutoria'),
+                'mine_tutor_label'    => get_string('tutoria', 'gepeminfotutoria'),
+                'mine_empty_tutors_message' => get_string('tutorianotinformedpolo', 'gepeminfotutoria'),
+                'nopolohelp' => get_string('nopolohelp', 'gepeminfotutoria'),
             ];
         }
 
@@ -152,8 +152,8 @@ class tutoria_page implements \renderable, \templatable {
             }
 
             $polos_label = $count > 1
-                ? get_string('polosatendidos', 'gepeminfortutoria')
-                : get_string('polo', 'gepeminfortutoria');
+                ? get_string('polosatendidos', 'gepeminfotutoria')
+                : get_string('polo', 'gepeminfotutoria');
 
             $result[] = [
                 'name'            => fullname($user),

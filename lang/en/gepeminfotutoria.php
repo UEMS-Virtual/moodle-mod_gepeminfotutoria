@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * English strings for mod_gepeminfortutoria.
+ * English strings for mod_gepeminfotutoria.
  *
- * @package    mod_gepeminfortutoria
+ * @package    mod_gepeminfotutoria
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,8 +30,8 @@ $string['modulenameplural'] = 'Tutoring information';
 $string['pluginadministration'] = 'Tutoring information administration';
 $string['pluginname'] = 'Tutoring information';
 $string['privacy:metadata'] = 'The Tutoring information activity does not store personal data of its own. It only displays information already available in the course.';
-$string['gepeminfortutoria:addinstance'] = 'Add a new Tutoring information activity';
-$string['gepeminfortutoria:view'] = 'View Tutoring information activity';
+$string['gepeminfotutoria:addinstance'] = 'Add a new Tutoring information activity';
+$string['gepeminfotutoria:view'] = 'View Tutoring information activity';
 
 // Interface — labels and titles.
 $string['equipetutoria']        = 'Tutoring Team';

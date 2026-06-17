@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace mod_gepeminfortutoria;
+namespace mod_gepeminfotutoria;
 
 use backup;
 use backup_controller;
@@ -25,7 +25,7 @@ use restore_dbops;
 /**
  * Tests for backup and restore support.
  *
- * @package    mod_gepeminfortutoria
+ * @package    mod_gepeminfotutoria
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @coversNothing
@@ -44,7 +44,7 @@ final class backup_restore_test extends \advanced_testcase {
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
 
-        $generator->create_module('gepeminfortutoria', [
+        $generator->create_module('gepeminfotutoria', [
             'course' => $course->id,
             'name' => 'Equipe da tutoria',
             'intro' => 'Texto de introdução da atividade',
@@ -56,7 +56,7 @@ final class backup_restore_test extends \advanced_testcase {
 
         $newcourseid = $this->backup_and_restore_course($course);
 
-        $records = $DB->get_records('gepeminfortutoria', ['course' => $newcourseid]);
+        $records = $DB->get_records('gepeminfotutoria', ['course' => $newcourseid]);
         $this->assertCount(1, $records);
 
         $restored = reset($records);

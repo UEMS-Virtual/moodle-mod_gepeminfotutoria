@@ -1,5 +1,5 @@
 {{!
-    @template mod_gepeminfortutoria/full_view
+    @template mod_gepeminfotutoria/full_view
 
     Full view — shows all tutoring contacts with their polos.
     Used for non-student roles and as the "Lista completa" panel for students.
@@ -10,7 +10,7 @@
 }}
 <div class="uit-full-view">
     <header class="uit-green-panel uit-full-hero">
-        <div class="uit-big-title">{{#str}} equipetutoria, gepeminfortutoria {{/str}}</div>
+        <div class="uit-big-title">{{#str}} equipetutoria, gepeminfotutoria {{/str}}</div>
         {{#has_full_intro}}
         <div class="uit-full-intro">{{{full_intro}}}</div>
         {{/has_full_intro}}
@@ -18,11 +18,11 @@
 
     <div class="uit-full-content">
         <section class="uit-full-panel">
-            <h2 class="uit-role-title">{{#str}} tutoria, gepeminfortutoria {{/str}}</h2>
+            <h2 class="uit-role-title">{{#str}} tutoria, gepeminfotutoria {{/str}}</h2>
             {{#all_has_tutors}}
             <div class="uit-people-list">
                 {{#all_tutors}}
-                {{> mod_gepeminfortutoria/person_item_full }}
+                {{> mod_gepeminfotutoria/person_item_full }}
                 {{/all_tutors}}
             </div>
             {{/all_has_tutors}}

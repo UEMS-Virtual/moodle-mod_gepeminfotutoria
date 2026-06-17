@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Instance form for mod_gepeminfortutoria.
+ * Instance form for mod_gepeminfotutoria.
  *
- * @package    mod_gepeminfortutoria
+ * @package    mod_gepeminfotutoria
  * @copyright  2026 UEMS Virtual
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,7 +29,7 @@ require_once($CFG->dirroot . '/course/moodleform_mod.php');
 /**
  * Activity instance form.
  */
-class mod_gepeminfortutoria_mod_form extends moodleform_mod {
+class mod_gepeminfotutoria_mod_form extends moodleform_mod {
     /**
      * Define the form.
      */
@@ -42,20 +42,20 @@ class mod_gepeminfortutoria_mod_form extends moodleform_mod {
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
-        $mform->setDefault('name', get_string('defaultname', 'gepeminfortutoria'));
+        $mform->setDefault('name', get_string('defaultname', 'gepeminfotutoria'));
 
         $this->standard_intro_elements();
         $mform->setDefault('introeditor', [
-            'text' => get_string('defaultintro', 'gepeminfortutoria'),
+            'text' => get_string('defaultintro', 'gepeminfotutoria'),
             'format' => FORMAT_HTML,
         ]);
 
-        $mform->addElement('header', 'gepeminfortutoriasettings', get_string('pluginname', 'gepeminfortutoria'));
+        $mform->addElement('header', 'gepeminfotutoriasettings', get_string('pluginname', 'gepeminfotutoria'));
 
-        $mform->addElement('text', 'supporttitle', get_string('supporttitle', 'gepeminfortutoria'), ['size' => '64']);
+        $mform->addElement('text', 'supporttitle', get_string('supporttitle', 'gepeminfotutoria'), ['size' => '64']);
         $mform->setType('supporttitle', PARAM_TEXT);
         $mform->addRule('supporttitle', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
-        $mform->setDefault('supporttitle', get_string('seuponto', 'gepeminfortutoria'));
+        $mform->setDefault('supporttitle', get_string('seuponto', 'gepeminfotutoria'));
 
         $this->standard_coursemodule_elements();
         $this->add_action_buttons();

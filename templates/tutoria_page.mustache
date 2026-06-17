@@ -7,7 +7,7 @@
     (at your option) any later version.
 }}
 {{!
-    @template mod_gepeminfortutoria/tutoria_page
+    @template mod_gepeminfotutoria/tutoria_page
 
     Main page template. Renders the student view (Meu polo + toggle) or the
     full view depending on the viewer's role.
@@ -15,14 +15,14 @@
 <div class="mod-gepemin-info-tutoria">
 
 {{#isstudent}}
-<div class="uit-switcher-shell" data-region="gepeminfortutoria-switcher">
+<div class="uit-switcher-shell" data-region="gepeminfotutoria-switcher">
     <div class="uit-switcher-top">
-        <div class="uit-toggle" role="tablist" aria-label="{{#str}} alternarvisualizacao, gepeminfortutoria {{/str}}">
+        <div class="uit-toggle" role="tablist" aria-label="{{#str}} alternarvisualizacao, gepeminfotutoria {{/str}}">
             <button type="button" role="tab" aria-selected="true" data-view="mine" class="uit-toggle-btn">
-                {{#str}} meupolo, gepeminfortutoria {{/str}}
+                {{#str}} meupolo, gepeminfotutoria {{/str}}
             </button>
             <button type="button" role="tab" aria-selected="false" data-view="all" class="uit-toggle-btn">
-                {{#str}} listacompleta, gepeminfortutoria {{/str}}
+                {{#str}} listacompleta, gepeminfotutoria {{/str}}
             </button>
         </div>
     </div>
@@ -35,10 +35,10 @@
                         <div class="uit-big-title">{{supporttitle}}</div>
                     </div>
                     <div class="uit-polo-name">
-                        <div class="uit-polo-label">{{#str}} seupolo, gepeminfortutoria {{/str}}</div>
+                        <div class="uit-polo-label">{{#str}} seupolo, gepeminfotutoria {{/str}}</div>
                         <div class="uit-polo-value">
                             {{#has_polo}}{{polo_name}}{{/has_polo}}
-                            {{^has_polo}}{{#str}} sempoloidentificado, gepeminfortutoria {{/str}}{{/has_polo}}
+                            {{^has_polo}}{{#str}} sempoloidentificado, gepeminfotutoria {{/str}}{{/has_polo}}
                         </div>
                     </div>
                 </aside>
@@ -53,7 +53,7 @@
                             {{#mine_has_tutors}}
                             <div class="uit-people-list">
                                 {{#mine_tutors}}
-                                {{> mod_gepeminfortutoria/person_item_compact }}
+                                {{> mod_gepeminfotutoria/person_item_compact }}
                                 {{/mine_tutors}}
                             </div>
                             {{/mine_has_tutors}}
@@ -67,17 +67,17 @@
         </div>
 
         <div class="uit-view" data-panel="all">
-            {{> mod_gepeminfortutoria/full_view }}
+            {{> mod_gepeminfotutoria/full_view }}
         </div>
     </div>
 </div>
 {{/isstudent}}
 
 {{^isstudent}}
-{{> mod_gepeminfortutoria/full_view }}
+{{> mod_gepeminfotutoria/full_view }}
 {{/isstudent}}
 
 </div>
 {{#js}}
-require(['mod_gepeminfortutoria/view_toggle'], function(module) { module.init(); });
+require(['mod_gepeminfotutoria/view_toggle'], function(module) { module.init(); });
 {{/js}}
