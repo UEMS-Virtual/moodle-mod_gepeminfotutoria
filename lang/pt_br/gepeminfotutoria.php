@@ -34,7 +34,7 @@ $string['gepeminfotutoria:addinstance'] = 'Adicionar uma nova atividade Informa�
 $string['gepeminfotutoria:view'] = 'Visualizar atividade Informações de tutoria';
 
 // Interface — labels and titles.
-$string['equipetutoria']        = 'Equipe de Tutoria';
+$string['equipetutoria']        = 'Equipe de Mediação e Tutoria';
 $string['seuponto']             = 'Sua Tutoria';
 $string['seupolo']              = 'Seu polo';
 $string['meupolo']              = 'Meu polo';
@@ -43,7 +43,10 @@ $string['alternarvisualizacao'] = 'Alternar visualização';
 $string['supporttitle'] = 'Título do painel do estudante';
 
 // Role labels.
-$string['tutoria'] = 'Tutoria';
+$string['tutoria'] = 'Mediação Pedagógica';
+$string['mediacaopedagogica'] = 'Mediação Pedagógica';
+$string['mediacao'] = 'Mediação';
+$string['tutoriapresencial'] = 'Tutoria Presencial';
 
 // Polo labels.
 $string['polo']           = 'Polo';
@@ -56,16 +59,20 @@ $string['introfull'] = 'Relação da tutoria vinculada aos polos da disciplina.'
 // Empty states.
 $string['sempessoa'] = 'Nenhuma pessoa encontrada para esta função.';
 $string['sempoloidentificado'] = 'Polo não identificado';
-$string['tutorianotinformedcourse'] = 'Tutoria não informada para a disciplina.';
-$string['tutorianotinformedpolo'] = 'Tutoria não informada para seu polo.';
+$string['tutorianotinformedcourse'] = 'Mediação e tutoria não informadas para a disciplina.';
+$string['tutorianotinformedpolo'] = 'Mediação e tutoria não informadas para seu polo.';
+$string['mediacaonotinformedcourse'] = 'Mediação Pedagógica não informada para a disciplina.';
+$string['mediacaonotinformedpolo'] = 'Mediação Pedagógica não informada para seu polo.';
+$string['tutoriapresencialnotinformedcourse'] = 'Tutoria Presencial não informada para a disciplina.';
+$string['tutoriapresencialnotinformedpolo'] = 'Tutoria Presencial não informada para seu polo.';
 $string['nopolohelp'] = 'Use a Lista completa para consultar a equipe da disciplina.';
 
 // Compatibility strings for records/backups created before this adaptation.
 $string['expect:auto'] = 'Automático';
 $string['expecttutor'] = 'Tutoria esperada';
 $string['expecttutor_help'] = 'Nesta adaptação, a Tutoria é sempre esperada.';
-$string['tutorpresencial'] = 'Tutoria';
-$string['tutorespresenciais'] = 'Tutoria';
+$string['tutorpresencial'] = 'Tutoria Presencial';
+$string['tutorespresenciais'] = 'Tutoria Presencial';
 $string['tutornotinformedcourse'] = 'Tutoria não informada para a disciplina.';
 $string['tutornotinformedpolo'] = 'Tutoria não informada para seu polo.';
 $string['nofunctionsexpected'] = 'Nenhuma função de tutoria está configurada para exibição nesta atividade.';

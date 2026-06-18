@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
  */
 class team_data {
 
-    /** Role shortname for tutors (Moodle Moderador / non-editing teacher). */
+    /** Role shortname for tutoring staff (Moodle Moderador / non-editing teacher). */
     const ROLE_TUTOR = 'teacher';
 
     /** Expectation mode: resolve from course context. */
@@ -46,28 +46,42 @@ class team_data {
     const EXPECT_NO = 2;
 
     /**
-     * Return the full team for a course, grouped by role.
+     * Return the full team for a course, grouped by tutoring function.
      *
-     * Each member array contains:
-     *   - user:           stdClass  (id, firstname, lastname, …)
-     *   - polos:          string[]  polo group names the person belongs to
-     *   - profileimageurl string    user's profile picture URL
-     *   - messageurl:     string    URL to start a Moodle conversation
+     * Presential tutoring is identified by membership in groups whose names contain "polo".
+     * Pedagogical mediation is identified by membership in course groups without "polo".
      *
      * @param int             $courseid
      * @param \context_module $modcontext  Used to build profile image URLs.
-     * @return array{tutors: array}
+     * @return array{presential: array, mediation: array, tutors: array}
      */
     public static function get_team(int $courseid, \context_module $modcontext): array {
         $coursecontext = \context_course::instance($courseid);
 
         $polo_groups = self::get_polo_groups($courseid);
-        $user_polos  = self::map_users_to_polos($polo_groups);
+        $mediation_groups = self::get_mediation_groups($courseid);
+        $user_polos = self::map_users_to_group_names($polo_groups);
+        $user_mediation_groups = self::map_users_to_group_names($mediation_groups);
 
-        $tutors = self::get_users_by_role(self::ROLE_TUTOR, $coursecontext, $user_polos);
+        $staff = self::get_users_by_role(self::ROLE_TUTOR, $coursecontext, $user_polos, $user_mediation_groups);
+
+        $presential = [];
+        $mediation = [];
+        foreach ($staff as $member) {
+            if (!empty($member['polos'])) {
+                $presential[] = $member;
+                continue;
+            }
+            if (!empty($member['mediation_groups'])) {
+                $mediation[] = $member;
+            }
+        }
 
         return [
-            'tutors' => $tutors,
+            'presential' => $presential,
+            'mediation' => $mediation,
+            // Backwards-compatible aggregate used by older tests/templates.
+            'tutors' => array_merge($mediation, $presential),
         ];
     }
 
@@ -82,24 +96,49 @@ class team_data {
 
         $groups = $DB->get_records('groups', ['courseid' => $courseid], 'name', 'id, name');
         return array_filter($groups, function ($g) {
-            return stripos($g->name, 'polo') !== false;
+            return self::is_polo_group($g->name);
         });
     }
 
     /**
-     * Build a map of userid => string[] of polo names.
+     * Return course groups without "polo" in the name.
      *
-     * @param array $polo_groups  Output of get_polo_groups().
-     * @return array  userid => string[]
+     * @param int $courseid
+     * @return array id => stdClass (id, name)
      */
-    private static function map_users_to_polos(array $polo_groups): array {
+    public static function get_mediation_groups(int $courseid): array {
         global $DB;
 
-        if (empty($polo_groups)) {
+        $groups = $DB->get_records('groups', ['courseid' => $courseid], 'name', 'id, name');
+        return array_filter($groups, function ($g) {
+            return !self::is_polo_group($g->name);
+        });
+    }
+
+    /**
+     * Determine if a group is a polo group.
+     *
+     * @param string $name
+     * @return bool
+     */
+    private static function is_polo_group(string $name): bool {
+        return stripos($name, 'polo') !== false;
+    }
+
+    /**
+     * Build a map of userid => string[] of group names.
+     *
+     * @param array $groups id => group records.
+     * @return array userid => string[]
+     */
+    private static function map_users_to_group_names(array $groups): array {
+        global $DB;
+
+        if (empty($groups)) {
             return [];
         }
 
-        list($in_sql, $params) = $DB->get_in_or_equal(array_keys($polo_groups), \SQL_PARAMS_NAMED, 'pg');
+        list($in_sql, $params) = $DB->get_in_or_equal(array_keys($groups), \SQL_PARAMS_NAMED, 'grp');
 
         $rs = $DB->get_recordset_sql(
             "SELECT gm.id, gm.userid, g.name
@@ -120,15 +159,17 @@ class team_data {
     /**
      * Return active users who have a specific role shortname in the given context.
      *
-     * @param string            $shortname     Role shortname.
-     * @param \context_course   $coursecontext
-     * @param array             $user_polos    userid => string[].
+     * @param string          $shortname             Role shortname.
+     * @param \context_course $coursecontext
+     * @param array           $user_polos            userid => polo group names.
+     * @param array           $user_mediation_groups userid => non-polo group names.
      * @return array
      */
     private static function get_users_by_role(
         string $shortname,
         \context_course $coursecontext,
-        array $user_polos
+        array $user_polos,
+        array $user_mediation_groups
     ): array {
         global $DB, $PAGE;
 
@@ -156,10 +197,11 @@ class team_data {
             $userpicture->size = 128;
 
             $result[] = [
-                'user'            => $user,
-                'polos'           => $user_polos[$user->id] ?? [],
-                'profileimageurl' => $userpicture->get_url($PAGE)->out(false),
-                'messageurl'      => (new \moodle_url('/message/index.php', ['id' => $user->id]))->out(false),
+                'user'              => $user,
+                'polos'             => $user_polos[$user->id] ?? [],
+                'mediation_groups'  => $user_mediation_groups[$user->id] ?? [],
+                'profileimageurl'   => $userpicture->get_url($PAGE)->out(false),
+                'messageurl'        => (new \moodle_url('/message/index.php', ['id' => $user->id]))->out(false),
             ];
         }
 
@@ -249,13 +291,35 @@ class team_data {
      * @return string[]
      */
     public static function get_student_polos(int $userid, array $polo_groups): array {
+        return self::get_user_group_names($userid, $polo_groups);
+    }
+
+    /**
+     * Return mediation group names the given user belongs to.
+     *
+     * @param int   $userid
+     * @param array $mediation_groups Output of get_mediation_groups().
+     * @return string[]
+     */
+    public static function get_student_mediation_groups(int $userid, array $mediation_groups): array {
+        return self::get_user_group_names($userid, $mediation_groups);
+    }
+
+    /**
+     * Return group names the given user belongs to from a pre-filtered group list.
+     *
+     * @param int   $userid
+     * @param array $groups id => group records.
+     * @return string[]
+     */
+    private static function get_user_group_names(int $userid, array $groups): array {
         global $DB;
 
-        if (empty($polo_groups)) {
+        if (empty($groups)) {
             return [];
         }
 
-        list($in_sql, $params) = $DB->get_in_or_equal(array_keys($polo_groups), \SQL_PARAMS_NAMED, 'pg');
+        list($in_sql, $params) = $DB->get_in_or_equal(array_keys($groups), \SQL_PARAMS_NAMED, 'grp');
         $params['userid'] = $userid;
 
         $rows = $DB->get_records_sql(

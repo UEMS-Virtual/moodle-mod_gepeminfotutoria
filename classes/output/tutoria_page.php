@@ -80,9 +80,11 @@ class tutoria_page implements \renderable, \templatable {
     public function export_for_template(\renderer_base $output): array {
         $coursecontext = \context_course::instance($this->course->id);
         $isstudent     = team_data::is_student($this->userid, $coursecontext);
-        $polo_groups   = team_data::get_polo_groups($this->course->id);
-        $team          = team_data::get_team($this->course->id, $this->context);
-        $tutors_data   = $this->format_members($team['tutors']);
+        $polo_groups      = team_data::get_polo_groups($this->course->id);
+        $mediation_groups = team_data::get_mediation_groups($this->course->id);
+        $team             = team_data::get_team($this->course->id, $this->context);
+        $mediation_data   = $this->format_members($team['mediation'], 'mediation_groups');
+        $presential_data  = $this->format_members($team['presential'], 'polos');
 
         $supporttitle = trim($this->instance->supporttitle ?? '');
         if ($supporttitle === '') {
@@ -100,8 +102,14 @@ class tutoria_page implements \renderable, \templatable {
             'hascontent' => true,
             'shownotice' => false,
             'show_tutors' => true,
-            'all_tutors' => $tutors_data,
-            'all_has_tutors' => !empty($tutors_data),
+            'all_mediation' => $mediation_data,
+            'all_has_mediation' => !empty($mediation_data),
+            'all_presential' => $presential_data,
+            'all_has_presential' => !empty($presential_data),
+            'all_tutors' => array_merge($mediation_data, $presential_data),
+            'all_has_tutors' => !empty($mediation_data) || !empty($presential_data),
+            'all_empty_mediation_message' => get_string('mediacaonotinformedcourse', 'gepeminfotutoria'),
+            'all_empty_presential_message' => get_string('tutoriapresencialnotinformedcourse', 'gepeminfotutoria'),
             'all_empty_tutors_message' => get_string('tutorianotinformedcourse', 'gepeminfotutoria'),
             'full_intro' => $fullintro,
             'has_full_intro' => $fullintro !== '',
@@ -109,18 +117,27 @@ class tutoria_page implements \renderable, \templatable {
 
         if ($isstudent) {
             $student_polos = team_data::get_student_polos($this->userid, $polo_groups);
+            $student_mediation_groups = team_data::get_student_mediation_groups($this->userid, $mediation_groups);
             $polo_name     = !empty($student_polos) ? $student_polos[0] : '';
-            $mine_tutors   = $this->filter_by_polo($team['tutors'], $polo_name);
+            $mine_mediation = $this->filter_by_groups($team['mediation'], $student_mediation_groups, 'mediation_groups');
+            $mine_presential = $this->filter_by_groups($team['presential'], $student_polos, 'polos');
 
             return $base + [
                 'isstudent'           => true,
                 'supporttitle'        => $supporttitle,
                 'polo_name'           => self::format_polo_name($polo_name),
                 'has_polo'            => !empty($polo_name),
-                'mine_tutors'         => $mine_tutors,
-                'mine_has_tutors'     => !empty($mine_tutors),
-                'mine_tutor_label'    => get_string('tutoria', 'gepeminfotutoria'),
-                'mine_empty_tutors_message' => get_string('tutorianotinformedpolo', 'gepeminfotutoria'),
+                'mine_mediation'      => $mine_mediation,
+                'mine_has_mediation'  => !empty($mine_mediation),
+                'mine_presential'     => $mine_presential,
+                'mine_has_presential' => !empty($mine_presential),
+                'mine_tutors'         => array_merge($mine_mediation, $mine_presential),
+                'mine_has_tutors'     => !empty($mine_mediation) || !empty($mine_presential),
+                'mine_mediation_label' => get_string('mediacaopedagogica', 'gepeminfotutoria'),
+                'mine_presential_label' => get_string('tutoriapresencial', 'gepeminfotutoria'),
+                'mine_tutor_label'    => get_string('mediacaopedagogica', 'gepeminfotutoria'),
+                'mine_empty_mediation_message' => get_string('mediacaonotinformedpolo', 'gepeminfotutoria'),
+                'mine_empty_presential_message' => get_string('tutoriapresencialnotinformedpolo', 'gepeminfotutoria'),
                 'nopolohelp' => get_string('nopolohelp', 'gepeminfotutoria'),
             ];
         }
@@ -136,24 +153,26 @@ class tutoria_page implements \renderable, \templatable {
      * @param array $members Output of team_data::get_team().
      * @return array
      */
-    private function format_members(array $members): array {
+    private function format_members(array $members, string $groupkey = 'polos'): array {
         $result = [];
         foreach ($members as $m) {
             $user  = $m['user'];
-            $polos = $m['polos'];
-            $count = count($polos);
+            $groups = $m[$groupkey] ?? [];
+            $count = count($groups);
 
             $polos_items = [];
-            foreach (array_values($polos) as $index => $polo) {
-                $polos_items[] = [
-                    'name'          => self::format_polo_name($polo),
-                    'has_separator' => $index > 0,
-                ];
+            if ($groupkey === 'polos') {
+                foreach (array_values($groups) as $index => $groupname) {
+                    $polos_items[] = [
+                        'name'          => self::format_polo_name($groupname),
+                        'has_separator' => $index > 0,
+                    ];
+                }
             }
 
-            $polos_label = $count > 1
-                ? get_string('polosatendidos', 'gepeminfotutoria')
-                : get_string('polo', 'gepeminfotutoria');
+            $polos_label = $groupkey === 'polos'
+                ? ($count > 1 ? get_string('polosatendidos', 'gepeminfotutoria') : get_string('polo', 'gepeminfotutoria'))
+                : get_string('mediacao', 'gepeminfotutoria');
 
             $result[] = [
                 'name'            => fullname($user),
@@ -161,7 +180,7 @@ class tutoria_page implements \renderable, \templatable {
                 'messageurl'      => $m['messageurl'],
                 'polos_label'     => $polos_label,
                 'polos_items'     => $polos_items,
-                'has_polos'       => !empty($polos),
+                'has_polos'       => !empty($groups),
             ];
         }
         return $result;
@@ -174,16 +193,16 @@ class tutoria_page implements \renderable, \templatable {
      * @param string $polo_name Polo name to filter by.
      * @return array Template-ready member arrays.
      */
-    private function filter_by_polo(array $members, string $polo_name): array {
-        if ($polo_name === '') {
+    private function filter_by_groups(array $members, array $group_names, string $groupkey): array {
+        if (empty($group_names)) {
             return [];
         }
 
-        $filtered = array_filter($members, function ($m) use ($polo_name) {
-            return in_array($polo_name, $m['polos'], true);
+        $filtered = array_filter($members, function ($m) use ($group_names, $groupkey) {
+            return !empty(array_intersect($group_names, $m[$groupkey] ?? []));
         });
 
-        return $this->format_members(array_values($filtered));
+        return $this->format_members(array_values($filtered), $groupkey);
     }
 
     /**
@@ -219,6 +238,21 @@ class tutoria_page implements \renderable, \templatable {
         }
 
         return implode('', $words);
+    }
+
+    /**
+     * Format mediation group names for display only.
+     *
+     * Group names are implementation details in Moodle enrolments; the interface uses
+     * pedagogical mediation terminology instead of exposing Tutor/Tutora group labels.
+     *
+     * @param string $name Raw Moodle group name.
+     * @return string Display name.
+     */
+    private static function format_mediation_group_name(string $name): string {
+        $name = trim($name);
+        $name = preg_replace('/^tutor(?:a)?\s+/iu', '', $name);
+        return trim($name ?? '');
     }
 
 }

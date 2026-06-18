@@ -46,17 +46,30 @@
                     {{/has_polo}}
                     <div class="uit-team-line">
                         <article class="uit-card">
-                            <h2 class="uit-role-title">{{mine_tutor_label}}</h2>
-                            {{#mine_has_tutors}}
+                            <h2 class="uit-role-title">{{mine_mediation_label}}</h2>
+                            {{#mine_has_mediation}}
                             <div class="uit-people-list">
-                                {{#mine_tutors}}
+                                {{#mine_mediation}}
                                 {{> mod_gepeminfotutoria/person_item_compact }}
-                                {{/mine_tutors}}
+                                {{/mine_mediation}}
                             </div>
-                            {{/mine_has_tutors}}
-                            {{^mine_has_tutors}}
-                            <p class="uit-empty">{{mine_empty_tutors_message}}</p>
-                            {{/mine_has_tutors}}
+                            {{/mine_has_mediation}}
+                            {{^mine_has_mediation}}
+                            <p class="uit-empty">{{mine_empty_mediation_message}}</p>
+                            {{/mine_has_mediation}}
+                        </article>
+                        <article class="uit-card">
+                            <h2 class="uit-role-title">{{mine_presential_label}}</h2>
+                            {{#mine_has_presential}}
+                            <div class="uit-people-list">
+                                {{#mine_presential}}
+                                {{> mod_gepeminfotutoria/person_item_compact }}
+                                {{/mine_presential}}
+                            </div>
+                            {{/mine_has_presential}}
+                            {{^mine_has_presential}}
+                            <p class="uit-empty">{{mine_empty_presential_message}}</p>
+                            {{/mine_has_presential}}
                         </article>
                     </div>
                 </div>

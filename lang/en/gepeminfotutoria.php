@@ -34,7 +34,7 @@ $string['gepeminfotutoria:addinstance'] = 'Add a new Tutoring information activi
 $string['gepeminfotutoria:view'] = 'View Tutoring information activity';
 
 // Interface — labels and titles.
-$string['equipetutoria']        = 'Tutoring Team';
+$string['equipetutoria']        = 'Mediation and Tutoring Team';
 $string['seuponto']             = 'Your Tutoring';
 $string['seupolo']              = 'Your polo';
 $string['meupolo']              = 'My polo';
@@ -43,7 +43,10 @@ $string['alternarvisualizacao'] = 'Switch view';
 $string['supporttitle'] = 'Student panel title';
 
 // Role labels.
-$string['tutoria'] = 'Tutoring';
+$string['tutoria'] = 'Pedagogical Mediation';
+$string['mediacaopedagogica'] = 'Pedagogical Mediation';
+$string['mediacao'] = 'Mediation';
+$string['tutoriapresencial'] = 'Presential Tutoring';
 
 // Polo labels.
 $string['polo']           = 'Polo';
@@ -56,16 +59,20 @@ $string['introfull'] = 'Tutoring assigned to the course polos.';
 // Empty states.
 $string['sempessoa'] = 'No person found for this role.';
 $string['sempoloidentificado'] = 'Polo not identified';
-$string['tutorianotinformedcourse'] = 'Tutoring not informed for the course.';
-$string['tutorianotinformedpolo'] = 'Tutoring not informed for your polo.';
+$string['tutorianotinformedcourse'] = 'Mediation and tutoring not informed for the course.';
+$string['tutorianotinformedpolo'] = 'Mediation and tutoring not informed for your polo.';
+$string['mediacaonotinformedcourse'] = 'Pedagogical Mediation not informed for the course.';
+$string['mediacaonotinformedpolo'] = 'Pedagogical Mediation not informed for your polo.';
+$string['tutoriapresencialnotinformedcourse'] = 'Presential Tutoring not informed for the course.';
+$string['tutoriapresencialnotinformedpolo'] = 'Presential Tutoring not informed for your polo.';
 $string['nopolohelp'] = 'Use the Full list to consult the course team.';
 
 // Compatibility strings for records/backups created before this adaptation.
 $string['expect:auto'] = 'Automatic';
 $string['expecttutor'] = 'Tutoring expected';
 $string['expecttutor_help'] = 'In this adaptation, Tutoring is always expected.';
-$string['tutorpresencial'] = 'Tutoring';
-$string['tutorespresenciais'] = 'Tutoring';
+$string['tutorpresencial'] = 'Presential Tutoring';
+$string['tutorespresenciais'] = 'Presential Tutoring';
 $string['tutornotinformedcourse'] = 'Tutoring not informed for the course.';
 $string['tutornotinformedpolo'] = 'Tutoring not informed for your polo.';
 $string['nofunctionsexpected'] = 'No tutoring role is configured for display in this activity.';

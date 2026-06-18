@@ -1,12 +1,8 @@
 {{!
     @template mod_gepeminfotutoria/full_view
 
-    Full view — shows all tutoring contacts with their polos.
+    Full view — shows mediation and presential tutoria contacts.
     Used for non-student roles and as the "Lista completa" panel for students.
-
-    Context variables (subset of tutoria_page context):
-    * all_tutors      - array of member items
-    * all_has_tutors  - bool
 }}
 <div class="uit-full-view">
     <header class="uit-green-panel uit-full-hero">
@@ -18,17 +14,31 @@
 
     <div class="uit-full-content">
         <section class="uit-full-panel">
-            <h2 class="uit-role-title">{{#str}} tutoria, gepeminfotutoria {{/str}}</h2>
-            {{#all_has_tutors}}
+            <h2 class="uit-role-title">{{#str}} mediacaopedagogica, gepeminfotutoria {{/str}}</h2>
+            {{#all_has_mediation}}
             <div class="uit-people-list">
-                {{#all_tutors}}
+                {{#all_mediation}}
                 {{> mod_gepeminfotutoria/person_item_full }}
-                {{/all_tutors}}
+                {{/all_mediation}}
             </div>
-            {{/all_has_tutors}}
-            {{^all_has_tutors}}
-            <p class="uit-empty">{{all_empty_tutors_message}}</p>
-            {{/all_has_tutors}}
+            {{/all_has_mediation}}
+            {{^all_has_mediation}}
+            <p class="uit-empty">{{all_empty_mediation_message}}</p>
+            {{/all_has_mediation}}
+        </section>
+
+        <section class="uit-full-panel">
+            <h2 class="uit-role-title">{{#str}} tutoriapresencial, gepeminfotutoria {{/str}}</h2>
+            {{#all_has_presential}}
+            <div class="uit-people-list">
+                {{#all_presential}}
+                {{> mod_gepeminfotutoria/person_item_full }}
+                {{/all_presential}}
+            </div>
+            {{/all_has_presential}}
+            {{^all_has_presential}}
+            <p class="uit-empty">{{all_empty_presential_message}}</p>
+            {{/all_has_presential}}
         </section>
     </div>
 </div>
